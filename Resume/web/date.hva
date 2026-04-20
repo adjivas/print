@@ -1,0 +1,14 @@
+\newcommand{\DTMdisplaydate}[2]{
+  \@open{span}{class="date"}#1/#2\@close{span}
+}
+\newcommand{\DTMdoubledate}[4]{
+  \@open{span}{class="rangedate"}%
+    \DTMdisplaydate{#1}{#2} -- \DTMdisplaydate{#3}{#4}%
+  \@close{span}
+}
+
+\newstyle{@media (max-width: 800px)}{
+  .date, .rangedate \{
+    display: none;
+  \}
+}

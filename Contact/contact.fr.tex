@@ -1,0 +1,74 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{fancyhdr}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+  \newcommand{\publicpgp}[2]{
+    www.mouse.paris/mouse/ressources/#1
+    }{
+      #2 \href{https://www.adjivas.eu/navi/ressources/#1}{www.mouse.paris/navi/ressources/#1}
+    }
+  }
+%END LATEX
+
+\title{\mousevox{
+  \contactitle{Contact}
+} {
+  \contactitle{Contact}
+}}
+\author{
+  adjivas \\
+  <contact.blog@adjivas.eu> \\
+  Résumé www.mouse.paris/mouse/resume.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi/resume.fr.pdf}{www.adjivas.eu/navi/resume.fr.pdf}
+  } \\
+  Blog www.mouse.paris/mouse/blog.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi/blog.fr.pdf}{www.adjivas.eu/navi/blog.fr.pdf}
+  } \\
+  Galerie www.mouse.paris/mouse/gallery.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi/gallery.fr.pdf}{www.adjivas.eu/navi/gallery.fr.pdf}
+  }
+}
+\date{}
+
+% enumitem
+\setlength{\itemsep}{0\baselineskip}
+\setlength{\parsep}{0pt}
+
+\begin{document}
+\neobar{nav/navi.fr}
+\maketitle
+\thispagestyle{empty}
+\begin{contactmain}
+
+Vous pouvez m'envoyer des messages chiffrés à l'aide de PGP en utilisant ma \href{ressources/public.asc}{clé publique} d'identifiant : \\
+\verb|0318B003218F9366| (\verb|8174 CFE1 C676 91E2 7843 8511 0318 B003 218F 9366|).
+
+Vous pouvez me contacter par :
+\begin{itemize}
+ \item E-mail à contact@mouse.paris
+ }{
+   \href{mailto:contact@adjivas.eu?subject=Contact Me!}{contact@adjivas.eu}
+ }
+ \item Chat XMPP à \href{xmpp:adjivas@jabber.fr?message}{adjivas@jabber.fr}
+\end{itemize}
+
+Mon compte Git est framagit.org/mouse \\
+}{
+  \href{https://github.com/adjivas}{github.com/adjivas}
+}
+
+% \href{https://steamcommunity.com/profiles/76561199243133528}{souris6475}
+
+\end{contactmain}
+\end{document}

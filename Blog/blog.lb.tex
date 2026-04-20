@@ -1,0 +1,86 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{fancyhdr}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+%END LATEX
+
+% me la .xairul. badydi'u
+% Hyrule Castle
+\title{\vspace{-50pt}\mousevox{
+  \profilesvg{mouse} \Huge{
+    % Le journal de la souris éclair
+    % smacu: x1 is a mouse of species x2
+    % ckemono: x1 is an anthropomorphic animal of type/species x2
+    % snukarni: k1 is a [shared journal]/blog about topic/subject k2 published/administered by k3 for participants/audience k4.
+    % zgavevu: x1 is visible electricity (lightning, electric arcing, etc.) produced by x2
+    % te lo zgavevu ckemono smacu ku snukarni
+    % te "souris éclair" snukarni
+
+    % lidysmacu: light mouse
+    me la lidysmacu pe le snukarni
+  }
+} {
+  \profilesvg{navi} \Huge{
+    % Navi's Blog
+    % snukarni: k1 is a [shared journal]/blog about topic/subject k2 published/administered by k3 for participants/audience k4.
+    me la .navi. pe le snukarni
+  }
+}}
+\author{
+  % Navi
+  la .navi.
+}
+\date{2024}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\subsection*{2024}
+
+\begin{itemize}[itemsep=0\baselineskip,parsep=0pt]
+  % Du café façon Guinness
+  % Coffee with a tint of dark beer
+  %
+  % - birje: x1 est de la bière brassée par x2
+  % - manku: x1 est sombre
+  % - simsa: x1 est semblable à x2 selon x3
+  % - ckafi: x1 est du café de type x2
+  % 
+  %
+  % - lo = gadri : Factuel générique « convertit un selbri en sumti ». Le résultat est flou en ce qui concerne l'individualité/groupement
+  % - lo'e - gadri : factuel « convertit un selbri en sumti ». Le sumti fait référence à l'archétype de lo {selbri}.
+  %
+  % - le = gadri : Descriptif générique « convertit un selbri en sumti ». Le résultat est flou en ce qui concerne l'individualité/groupement.
+  % - le'e = gadri : Descriptif « convertit un selbri en sumti ». Le sumti fait référence à l'archétype décrit ou perçu de le {selbri}.
+  % - poi: débute une clause relative restrictive (ne peut s'attacher qu'à un sumti)
+  % - ke'a: sumka'i; se réfère au sumti auquel la clause relative est attachée.
+  %
+  % help1: lo ckafi poi ke'a simsa lo   manku birje
+  % help2: le ckafi poi ke'a simsa le'e manku birje
+  %
+  % help0: le ckafi poi simsa lo'e manku birje lo ka se tengu makau
+
+  % Aknowledge:
+  % https://jboski.lojban.org
+  % https://lojban.github.io/ilmentufa/glosser/glosser.htm (see Boxes)
+  % https://glosbe.com/en/jbo/dark
+  % https://la-lojban.github.io/parser?l=NLPTree&c=compact-all
+  \item \bloglink{article00.fr}{Artigo00, le ckafi poi ke'a simsa le'e manku birje}
+  \item \bloglink{article01.fr}{Artigo01, Des sous-verres en cuir} % \blogtag{brown}{leather}\blogtag{blue}{laser}\blogtag{black}{ink} % maker
+  % matci: x1 is a mat or pad of material x2
+  % revyskapi: s1 is a quantity of leather from s2.
+  % mi dasni lo cutci be fi loi revyskapi
+  \item \bloglink{article02.fr}{Artigo02, De ArchLinux à Nix/NixOS} % #Ops #Nix
+\end{itemize}
+
+\end{document}

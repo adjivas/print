@@ -1,0 +1,18 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> specialisation.vfio-passthrough.configuration = <span style="color:#990000">{</span>
+<a name="line2"><span>02:</span></a>   virtualisation = <span style="color:#990000">{</span>
+<a name="line3"><span>03:</span></a>     vfio = <span style="color:#990000">{</span>
+<a name="line4"><span>04:</span></a>       enable = <b><span style="color:#0000FF">true</span></b>;
+<a name="line5"><span>05:</span></a>       IOMMUType = "intel";
+<a name="line6"><span>06:</span></a>       ignoreMSRs = <b><span style="color:#0000FF">true</span></b>;
+<a name="line7"><span>07:</span></a>       devices = <span style="color:#990000">[</span>
+<a name="line8"><span>08:</span></a>         # GPU RX7900 GRE
+<a name="line9"><span>09:</span></a>         "1002:744c"
+<a name="line10"><span>10:</span></a>         # Navi <span style="color:#993399">31</span>
+<a name="line11"><span>11:</span></a>         "1002:ab30"
+<a name="line12"><span>12:</span></a>       <span style="color:#990000">]</span>;
+<a name="line13"><span>13:</span></a>     <span style="color:#990000">}</span>;
+<a name="line14"><span>14:</span></a>     kvmfr = <span style="color:#990000">{</span> # Looking-glass
+<a name="line15"><span>15:</span></a>       # ...
+<a name="line16"><span>16:</span></a>     <span style="color:#990000">}</span>;
+<a name="line17"><span>17:</span></a>   <span style="color:#990000">}</span>;
+<a name="line18"><span>18:</span></a> <span style="color:#990000">}</span>;</pre>

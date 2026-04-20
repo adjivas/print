@@ -1,0 +1,175 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[nohead,
+  left=0.5in, bottom=0.25in, top=0in, right=0in
+]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+\usepackage[version=4]{mhchem}
+\usepackage[subdivisions=1, roundnessr=0.25, filledcolor=black, emptycolor=white]{progressbar}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{pgfornament}
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{titlesec}
+
+  \titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+  \titleformat{\subsubsection}{\normalfont\normalsize}{}{0pt}{}[\vspace{-15pt}]
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \lstset{breaklines=true}
+%END LATEX
+
+\title{%
+  \resumetitle{
+    \resumename{
+      \ornament{73}%
+      \mousevox{
+        \resumefirstname{la Souris} \resumelastname{Éclair}
+      }{
+        \resumefirstname{Alexandre} \resumelastname{DJIVAS}
+      }
+      \ornament{72}
+    } \\
+    \mousevox{Souris informatique sans fil ou chaînes \\ \vspace{-10pt}}{}%
+    Développeur libriste, spécialisé en infrastructures avec 5 ans d'expériences
+    % Développeur Elixir, spécialisé en infrastructures avec 5 ans d'expériences
+    % Développeur Rust, spécialisé en infrastructures avec 5 ans d'expériences
+    % Développeur IoT, spécialisé en infrastructures avec 5 ans d'expériences
+    % Développeur Logiciel Embarqué, spécialisé en infrastructures avec 5 ans d'expériences
+    % Développeur Rust full stack, spécialisé en infrastructures avec 5 ans d'expériences
+  } \\
+  \resumecontact{
+    contact@mouse.paris
+      \textbullet{}
+      \href{https://framagit.org/mouse}{framagit.org/mouse}
+    }{
+      \href{mailto:contact@adjivas.eu?subject=Contact Me!}{contact@adjivas.eu}
+      \textbullet{}
+      \href{https://github.com/adjivas}{github.com/adjivas} 
+      \textbullet{}
+      \href{tel:+33000000000}{(+33)0-00-00-00-00}
+    }
+  } \\
+  \resumeblog{
+    www.mouse.paris/mouse/blog.fr.pdf
+    }{
+      \href{https://www.adjivas.eu/navi/blog.fr.pdf}{www.adjivas.eu/navi/blog.fr.pdf}
+    }
+  }
+}
+\author{}
+\date{}
+
+\begin{document}
+\selectlanguage{french} % BUGFIXE 1.07.0
+
+\neobar{nav/navi.fr}
+\maketitle
+
+\thispagestyle{empty}
+\begin{resumemain}
+\subsubsection*{Expériences}
+\begin{tabular}{p{.125\textwidth}p{.60\textwidth}r}
+       & \textbf{CDI, Free Mobile}, Développeur C/Go & \DTMdoubledate{1}{2025}{7}{2025} \\
+       & \tabitem Développement de NF (Network Function) de cœurs de réseau en logiciel libre (Go, Prometheus, Free5Gc) tel qu'un EIR (Equipment Identity Register) et du support IPv6. & \\
+       & \textbf{CDI, Valtech/Louis Vuitton}, Développeur Elixir & \DTMdoubledate{5}{2023}{1}{2025} \\
+       & \tabitem Contribution à l'Order Management System (OMS) d'LV, participation à l'écriture de tests et à la maintenance de services en haute disponibilité. & \\
+       & \textbf{CDI, 42 Network}, Développeur Elixir & \DTMdoubledate{7}{2021}{5}{2023} \\
+       & \tabitem Développement de Services (Elixir, Phoenix/LiveView, Ruby - Ruby on Rails, Kubernetes, Elasticsearch) tel qu'un moteur de recherche d'étudiants et de services de métriques de nos étudiants. & \\
+       & \textbf{CDI, Qonfucius}, Développeur Rust & \DTMdoubledate{3}{2021}{6}{2021} \\
+       & \tabitem Contribution en logiciel libre à l'écriture d'un pilote de base de donnée ArangoDB. & \\
+       & \resumeline{gray} \\
+\end{tabular}
+
+\vspace{-1em}
+\noindent
+\begin{tabular}{p{.125\textwidth}p{.60\textwidth}r}
+       & \textbf{42 Chips}, Trésorier et responsable pédagogique & \DTMdoubledate{1}{2020}{1}{2024} \\
+       & \tabitem Production de contenu pédagogique. & \\
+       & \tabitem Administration du module d'électronique de \href{https://www.42.fr}{l'École 42}. \\
+       % & \textbf{\href{https://www.ens.psl.eu}{ENS (Ulm)}}, Stage en programmation à l’\href{https://parkas.di.ens.fr/people.html}{équipe Parkas} & \\
+       % & \tabitem Participation à la création d’un framework permettant de trouver la meilleur combinaison de choix d’implémentation
+       %      pour générer du code efficace pour des calculs intensifs sur GPU. & 2018 \\
+       % & \textbf{\href{https://www.pasteur.fr}{Institut Pasteur}}, Partenariat Architecte en base de données & \\
+       % & \tabitem Contribution à un outil de référencement de littérature médicale. & 2017 \\
+       % & \textbf{\href{https://www.icomprovence.net}{ICOM’Provence}}, Stage d'Architecte en solution numérique & \\
+       % & \tabitem Programmation d'un concept de souris virtuel pour faciliter l’accès aux numériques pour les personne fragilisées par un handicape. & 2014 \\
+       % & \textbf{Pixtory}, Programmeur et traducteur & 2013 \\
+       % & Intégration d’une solution d’internationalisation i18n pour une plateforme commerciale. & \\
+       % & \textbf{\href{https://www.maregionsud.fr}{Conseil Régional}}, Technicien d'assistance \amper{} Technicien réseau & 2010 \amper{} 2011\\
+       % & \tabitem Maintenance d’un parc informatique. & \\
+       % & \tabitem Téléconseille d’utilisateurs et formation. & \\
+       % & \textbf{Micro Concept \amper{} Cybertek}, Assembleur & 2008 \amper{} 2009 \\
+       % & \tabitem Maintenance et assamblage d’ordinateur personnel avec refroidissement à eau. & 2008 \amper{} 2009 \\
+\end{tabular}
+
+\subsubsection*{Compétences}
+\begin{tabular}{p{.125\textwidth}p{.60\textwidth}r}
+       & \textbf{Informatique} \\
+       & \multicolumn{2}{l}{\progressbar{0.9} Nix/Linux} \\
+       & \multicolumn{2}{l}{\progressbar{0.8} Rust (Depuis sa création et avec participation aux meetups)} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} C/C++, Assembleur (Intel[x86-64], Microchip)} \\
+       & \multicolumn{2}{l}{\progressbar{0.8} Elixir} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} Go, Python, Clojure, Bash/Babashka, R, OCaml, Lisp, Racket} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} Prolog} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} KSQL/SQL, Kafka, Elasticsearch} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} \LaTeX} \\
+       %HEVEA & \textbf{Graphisme} & \\
+       %HEVEA & \multicolumn{2}{l}{\progressbar{0.8} Inkscape} \\
+       %HEVEA & \multicolumn{2}{l}{\progressbar{0.4} Krita} \\
+       %HEVEA & \multicolumn{2}{l}{\progressbar{0.3} Blender} \\
+       & \textbf{Électronique \amper{} Mécanique} & \\
+       & \multicolumn{2}{l}{\progressbar{0.9} KiCad{}{}{} \progressbar{0.7} Altium} \\
+       & \multicolumn{2}{l}{\progressbar{0.6} FreeCad \progressbar{0.3} Solidworks} \\
+       %HEVEA & \multicolumn{2}{l}{\progressbar{0.4} Qgis} \\
+\end{tabular}
+
+\subsubsection*{Projets}
+\begin{tabular}{p{.125\textwidth}p{.75\textwidth}r}
+       & \textbf{Cheeseboard} -- un jeu d'échecs en Rust et Prolog pour expérimenter du WebAssembly et du Peer2Peer (en cours). \\
+       & \textbf{MouseOS}{\href{https://github.com/adjivas/NaviOS}{NaviOS}}} -- Une distribution Linux basée sur NixOS, développée maison. \\
+       & \textbf{Mouse's blog}{\bloglink{https://www.adjivas.eu/navi/blog.fr}{Navi's Blog}}} -- Un blog à propos d'électronique et de programmation. \\
+\end{tabular}
+
+\subsubsection*{Études}
+\begin{tabular}{p{.125\textwidth}p{.58\textwidth}r}
+       & \textbf{\href{https://www.42.fr}{École 42}} & \\
+       & \tabitem Spécialisation en électronique & \DTMdoubledate{1}{2017}{7}{2019} \\
+       & \tabsubitem{} Développement de firmware et conception de PCB multicouches. & \\
+       & \tabsubitem{} Conception d'une carte mère ARM en projet de fin d'étude. & \\
+       & \tabitem Cursus avancé : Programmation système et réseau, algorithmie. Stage de fin d'étude à l'ENS (rue Ulm) en calculs intensifs sur GPU. & \DTMdoubledate{12}{2014}{12}{2016} \\
+       
+       & \textbf{\href{https://www.lyc-hugo-marseille.ac-aix-marseille.fr{Lycée Victor Hugo}} & \\
+       & \tabitem Brevet de Technicien Supérieur en programmation (BTS) & \DTMdoubledate{10}{2011}{11}{2012} \\
+       }
+       % & \textbf{\href{https://www.lyc-mendesfrance-vitrolles.ac-aix-marseille.fr}{Lycée Pierre Mendès France}} & \\
+       % & \tabitem Baccalauréat en Systèmes Électroniques Numériques (SEN). & \DTMdoubledate{9}{2008}{9}{2011} \\
+       % & \tabitem Brevet d’Études Professionnelles en électronique embarqué. & \DTMdisplaydate{9}{2011} \\
+\end{tabular}
+% \subsubsection*{Littératures}
+% \begin{tabular}{p{.125\textwidth}p{.60\textwidth}r}
+%        & \href{https://archive.org/details/TheMangaGuideToElectricity}{The Manga Guide To Electricity} \\
+%        & \href{https://www.alchemistowl.org/pocorgtfo/}{International Journal of PoC||GTFO} \\
+%        & \href{https://archive.org/details/TheArtOfElectronics-2ndEdition}{The Art of Electronic} \\
+%        & The Art of Computer Programming \\
+% \end{tabular}
+\end{resumemain}
+\end{document}

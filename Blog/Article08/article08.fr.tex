@@ -1,0 +1,224 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+\usepackage{csquotes}
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\usepackage[clock]{ifsym}
+
+\babelprovide[import]{chinese}
+\babelfont[chinese]{rm}{FandolSong-Regular.otf}
+
+\selectlanguage{french}
+\sisetup{
+  detect-all,
+  locale = FR,
+  range-phrase = \text{ à }
+}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{wrapfig}
+  \usepackage{placeins}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \newcommand{\articlefigure}[4]{
+    \begin{wrapfigure}[25]{r}{0.5\textwidth}
+    #4
+    \end{wrapfigure}
+  }
+
+  \newcommand{\LiFePoFour}[0]{\ce{LiFePO_4}}
+  \newcommand{\SixtyThreeNi}[0]{\ce{^63Ni}}
+  \newcommand{\ThreeH}[0]{\ce{^3H}}
+  \newcommand{\NinetySr}[0]{\ce{_9_0Sr}}
+  \newcommand{\LiCoOtwo}[0]{\ce{LiCoO_2}}
+
+  \lstset{breaklines=true}
+%END LATEX
+
+\title{
+  \blogtitle{Des Batteries de Ceinture}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article08.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Lorsque nous partons à l'aventure ou en voyage, nous pouvons avoir besoin d'une batterie portable qui soit rechargeable.
+Celle-ci peut alimenter en continu nos lampes ou nos équipements nomades d'électroniciens, d'informaticiens, de spéléologues.
+
+Nous pouvons en fabriquer main ou en acheter, par exemple auprès de fournisseurs comme \href{https://eu.omnicharge.co}{omnicharge}.
+Selon \href{https://www.youtube.com/watch?v=_WI9Nwqvplo}{(GreatScott!, My Power Bank Rivals Commercial Ones?! Super Fast! DIY or Buy)} le choix d'en fabriquer une main ou d'en acheter se vaudrait. Selon \href{https://www.youtube.com/watch?v=nktb9O6Rttw}{(Djambo, Build Super Fast \& High Capacity Power Banks 130W - DIY Fast Charge 15000mAh Power Bank)}, en fabriquer soi-même permettrait de choisir des composants de meilleures qualités, de ne pas être trompé sur la marchandise, de la rendre plus personnalisable, de la rendre facile à réparer.
+
+Ces vidéos sont très instructives pour apprendre à fabriquer sa propre batterie. Elles listent des étapes telles que constituer sa liste de composant/sa BOM (Bill Of Materials), souder ses batteries et composants, valider son montage, d'assembler dans son boitier. \\
+
+Ce qui m'a encore plus motivé à en fabriquer une, c'est la possibilité de concevoir une batterie portable USB-C plus proche de l'expérience des premières batteries qui pouvait se porter à la ceinture.
+
+% TODO: Add image ma batterie assemblé final
+
+\newpage
+\section{Les Origines des Batteries Rechargeables}
+\articlefigure{25}{r}{0.5\textwidth}{
+  \simpleimage{.5}{nmah-872020}{\href{https://americanhistory.si.edu/collections/object/nmah_872020}{Miner's Electric Cap Lamp} du \href{https://americanhistory.si.edu}{Musée national d'histoire américaine}}
+}
+
+Les premières batteries portables du début XXe utilisaient des accumulateurs au plomb-acide (\ce{PbO2}). Elles furent imaginées pour soutenir l'industrie minière, ou plus généralement l'éclairage industriel. Elles pesaient moins de 5kg et pouvaient se porter à la ceinture.
+
+Je peux vous citer la \href{https://americanhistory.si.edu/collections/object/nmah_872013}{Edison Electric modèle P} des années 10, ou encore ma \href{https://collection.sciencemuseumgroup.org.uk/objects/co8654012/miners-lamp}{Oldham-Arras modèle P avec phare en G} de la fin des années 40.
+Ma préféré est cette Edison modèle E avec phare en H de 1912.
+
+Nos batteries portables de la fin d'XXe utilisent des accumulateurs au Lithium. Cela peut par exemple être des Lithium-Fer Phosphate (\LiFePoFour), ou des Lithium-ion polymère (\ce{Li-Po}) qui désigne des Lithium-Cobalt-Oxyde (\LiCoOtwo) et des Lithium-Nickel-Manganèse-Cobalt (\ce{NMC}). Le Lithium-Fer est robuste, mais a une densité énergétique et tension utile plus petite. Le Lithium-ion est très performant, mais est moins durable.
+Leur électronique est plus complexe et nécessitent un BMS (Battery Management System) pour contrôler leurs charmes.
+
+\section{Le Projet \enquote{Light Bat}}
+Notre batterie rechargeable de rêve a les fonctionnalités suivantes :
+\begin{itemize}
+  \item De USB-C avec Power Delivery 100W pour pouvoir alimenter une LED COB\footnote{Chip On Board : plusieurs LED montées sur le même substrat métal} haute puissance ou d'autres équipements tout autant consommateur.
+  \item Un boitier métal et des accumulateurs Lithium-Fer pour augmenter sa résistence aux chocs, pour avoir une chimie plus stable qu'avec des Lithium-ion.
+\end{itemize}
+
+Nos étapes seront de constituer une BOM (Bill of Material) qui sera notre liste de composants, de concevoir un schéma qui connecte ces composants, de prévoir de la sûreté avant de souder nos composants, de les souder, de modéliser et usiner notre boitier, de monter notre batterie.
+
+\newpage
+\subsection{La BOM}
+Nous avons identifié notre besoin, notre première étape est d'y répondre en constituant une liste de composant d'électroniques dans un tableur.
+Nous aurons besoin de accumulateurs Lithium-Fer, d'un BMS pour les décharger/recharger et d'un module USB-C Power Delivery 100W bi-directionnel.
+
+Habituellement, nous recherchons ces composants dans des catalogues de distributeur tels que \href{https://fr.farnell.com/}{Farnell}, \href{https://www.lcsc.com}{LCSC Electronics}, \href{https://fr.rs-online.com/web/}{RS Components}, \href{https://eu.mouser.com/}{Mouser}...
+\\
+Afin de diminuer le montant du projet, j'ai constitué cette liste en utilisant \href{https://fr.aliexpress.com/}{Aliexpress} :
+
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{|l|c|c|c|}
+    \hline \bf Description& \bf Qté& \bf Fournisseur& \bf Réf-Fournisseur \\ \hline
+  
+    3.2V15Ahx4 32140 \LiFePoFour{} Battery & x4 & \href{https://www.aliexpress.com/store/1104782369}{1104782369} & \href{https://fr.aliexpress.com/item/1005009196146663.html}{1005009196146663, IFR32140} \\
+    BMS 4S 3.2V@30A \LiFePoFour{} Battery & x1 & \href{https://www.aliexpress.com/store/2138141}{2138141} & \href{https://fr.aliexpress.com/item/32926036899.html}{32926036899, HX-4S-F30A} \\
+    IP2368 Bidirectional 100w Type-C & x1 & \href{https://www.aliexpress.com/store/1102697794}{1102697794} & \href{https://fr.aliexpress.com/item/1005009210774096.html}{1005009210774096, IP2368} \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\href{https://fr.aliexpress.com/}{Aliexpress} est une plateforme de vendeurs et revendeurs lowcost essentiellement basés en Chine, ce n'est pas distributeur professionnel de composants d'électroniques. L'article \href{https://hackaday.com/2024/08/24/comparing-aliexpress-vs-lcsc-sourced-mosfets}{(2024, Comparing AliExpress Vs LCSC-Sourced MOSFETs)} du \href{https://hackaday.com}{Hackaday} documente des difficultés à se fournir des composants correctement identifiés, il est donc nécessaire de tester tout ce qui sera importé depuis cette plateforme.
+
+\subsection{Le Schéma}
+Nous avons identifiés les principaux composants, la lecture de leurs descriptions/datasheets nous a appris comment les connecter entre eux.
+
+Notre cas étant simple, j'aurais pu dessiner le schéma de nos composants sur un tableau. J'ai cependant la démarche open-hardware de vous partager ce projet, j'ai donc utilisé \href{https://www.freecad}{FreeCad} pour vous formaliser ce schéma et sa bibliothèque de nos composants.
+
+\simpleschemas{.3}{bat-light-schematic}{Schéma du projet \href{BatLight/bat\_light/bat\_light.kicad\_pro}{bat\_light.kicad\_pro} en 4S1P}
+
+Concevoir ce schéma nous est utile pour prendre le temps de nous relire, de valider la BOM et de commander ses composants, d'avoir un plan de ce que nous devrons souder à réception.
+
+\subsection{La Sûreté}
+Nous devons considérer les risques possibles lors de la soudure de nos composants de batteries.
+
+Les \LiFePoFour{} sont plus stables que leurs variantes \ce{Li-Po}, des accidents restent possibles mais seront moins violents et nous aurons plus de temps de réaction.
+Ces accidents peuvent survenir en raison d'une défaillance du BMS ou d'erreurs de câblage.
+
+Je vous propose donc ces quelques mesures de prévention :
+\begin{itemize}
+  \item Si possible, travailler dans un espace ouvert ou ventilé, ou à défaut avec un masque à gaz disponible en cas d'urgence.
+  \item Travailler sur une surface incombustible, par exemple une caisse résistante au feu.
+  \item Ne pas travailler à proximité de matériaux combustibles, notamment d'autres batteries.
+  \item Réaliser les opérations de soudure en étant guidé par notre schéma électrique.
+\end{itemize}
+
+\newpage
+En cas d'accident de production, laissé brûler la batterie et protéger l’environnement  n'est pas toujours la meilleure solution.
+Je vous propose à la place cette procédure d'urgence :
+\begin{itemize}
+  \item \Interval{} Premières secondes : S'équiper du masque à gaz.
+  \item \showclock{0}{5} Premières minutes : Immerger la batterie dans un bac d'eau douce froide pour stopper l'emballement thermique, pour stabiliser sa température.
+  \item \showclock{1}{10} Premières heures : Attendre la stabilisation thermique de la batterie, l'absence d’activité visible.
+  \item \showclock{5}{30} Heures suivantes : Saler l'eau pour augmenter sa conductivité, pour permettre une décharge lente de la batterie.
+  \item \showclock{11}{59} Jours suivants : Attendre que la batterie soit électriquement inerte, puis la sortir de l'eau et la sécher.
+\end{itemize}
+
+La batterie endommagée ne devra jamais être scellée dans une caisse hermétique en raison de son dégazage continu. Elle devra être considérée comme un déchet dangereux à recycler auprès d'une filière DEEE\footnote{Déchets d'Équipements Électriques et Électroniques}, par exemple à une déchetterie municipale.
+
+\subsection{La Soudure}
+Nous utiliserons une soudeuse par points pour connecter en série nos accumulateurs et notre BMS avec des lamelles, celles-ci seront idéalement de cuivres ou à défaut plusieurs de zinc soudé les une sur les autres.
+
+Nos accumulateurs sont de grands formats 32140, une soudeuse par points de 5kW ne suffira pas, j'ai personnellement utilisé ma \href{https://sequremall.com/products/sequre-sw3-energy-storage-spotwelder-lithium-battery-spotwelding}{SEQURE SQ-SW3} de 14kW pour la réalisation de ce projet.
+
+% TODO add Image soudeuse par points et piles soudés avec plusieurs zinc les un sur les autre
+
+Nous utiliserons un fer à souder pour connecter le BMS et le module USB-C avec des câbles, et un voltmètre pour valider notre montage.
+Si nous n'avons pas des contraintes \href{https://eur-lex.europa.eu/eli/dir/2011/65/oj/eng}{RoHS}\footnote{Restriction of Hazardous Substances : directive européenne limitant les substances dangereuses.}, nous pourrons utiliser une bobine au plomb (Sn63Pb37, Sn60Pb40, ...) pour une meilleur fiabilitée mécanique.
+
+% TODO add final images et validation avec multimétre
+
+\subsection{La CAO}
+La conception d'un boitier dépend essentiellement du matériau choisi, de sa méthode d'usinage et des capabilities du fabricant.
+Dans mon cas, j'ai choisi du métal plus proche de l'expérience des toutes premières batteries portables historiques.
+
+L'aluminium 7075 qui est léger et relativement résistant au stress mécanique par rapport à de l'inox. En bonus, nous pouvons anodiser l'aluminium \href{https://x.com/JLCCNC_Official/status/2011677881555173884}{jusqu'à 8 couleurs} !
+Celui-ci s'usine avec une CNC.
+
+Les \href{https://jlccnc.com/cnc-machining}{capacités de JLC3DP} sont :
+\begin{itemize}
+  \item Taille maximale : 1100\times{}600\times{}500 mm
+  \item Tolérances générales : \pm{}0.05 mm
+\end{itemize}
+
+Nous pouvons modéliser le boitier avec le logiciel libre de CAO \href{https://www.freecad.org/index.php?lang=fr}{FreeCAD}.
+Nous devrons ajouter un emplacement pour membrane en ePTFE afin de permettre la ventilation du pack de cellules, celle-ci pourra être IP67/IP68 pour être étanche à l’eau et à la poussière.
+Nous pouvons ajouter une jointure continue sous le couvercle de notre boitier pour le rendre étanche à l'immersion.
+Nous pouvons ajouter des stries pour augmenter la surface d'échange thermique, afin de refroidir efficacement le boitier.
+Nous pouvons prévoir une épaisseur de 4mm du boitier pour que celui-ci soit robuste.
+% TODO add https://fr.aliexpress.com/item/1005010362531645.html Color: 304 M10X1.5
+
+% TODO add image piece 3D + plan
+
+Le fabricant \href{https://jlccnc.com}{JLC3DP} a pu m'usiner ma pièce en moins d'1 semaine :
+
+% TODO add image boitier anodisé en bleu ciel
+
+\newpage
+\section{Retour d'expérience}
+Mon article \bloglink{article04.fr}{Article04} sur les ceintures avait repris les idées de durabilités et le style des ceintures de mineurs, avec cette batterie j'ai l'impression d'avoir restauré cet idéal.
+
+Fabriquer ma propre batterie m'a permi d'évoluer sur le sujet de la sûreté, par exemple la procédure d'urgence que je vous ai proposé me provient de nombreux conseils que j'ai eu en fablab et de ma lecture du mémoire \href{https://pnrs.ensosp.fr/Default/doc/SYRACUSE/5174/feu-de-batteries-au-lithium-nouveaux-enjeux-operationnels}{(2021, Feu de batteries au lithium : nouveaux enjeux opérationnels)} de l'\href{https://www.ensosp.fr}{École Nationale Supérieure des Officiers de Sapeurs-Pompiers}. \\
+
+La sûreté contrairement à la sécurité tolère que des accidents se produisent, nous devons donc savoir comment réagir.
+Je n'ai bien-sûr pas eu d'accident durant ce projet, avec un bon café et une concentration à toute épreuve ceux-ci sont très improbables. \\
+
+La difficulté principale que j'ai eu a était d'utiliser une soudeuse à pointe adaptée, cet équipement n'est pas si commun que ça en fablab. Une de mes amies (\href{https://github.com}{tbailleu}) m'a  prêté la sienne, mais celle-ci était trop légère pour mon format de batterie.
+Je me suis donc procuré une \href{https://sequremall.com/products/sequre-sw3-energy-storage-spotwelder-lithium-battery-spotwelding}{SEQURE SQ-SW3} pour compléter mon matériel d'électronicien. Je sais que celle-ci me sera utile sur d'autres de mes projets.
+
+\section{Le Futur des Batteries}
+Les batteries Lithium-ion ont atteint leurs limites industrielles, leur densité énergétique pratique est de 270–300 Wh/kg par cellule tout au plus.
+De nouvelles technologies au Lithium sont déjà en cours de développement ou d'industrialisation. Par exemple les Lithium-métal auraient une densité énergétique de 300–400 Wh/kg en laboratoire et supportent des plages de températures plus larges allant de \SIrange{-40}{100}{\celsius}. Les Lithium–air auraient une densité énergétique théorique de 10000 Wh/kg, les progrès sont pour l'instant de 1200 Wh/kg en laboratoire. \\
+
+Les batteries nucléaires pourraient être la nouvelle voie, elles ont des densités énergétiques de désintégration théoriques à 126 MWh/g pour le Tritium (\ThreeH) et à 145 MWh/g pour le Strontium 90 (\NinetySr). Elles sont extrêmement résistantes aux températures et aux pressions, elles ont des durées de vie exceptionnellement longues.
+
+Un récent progrès est les mini-batteries nucléaires, par exemple la société d'énergie nouvelle Betavolt Technology (\href{https://www.betavolt.tech}{\foreignlanguage{chinese}{北京贝塔伏特新能科技有限公司}}) a annoncé sa première batterie \href{https://www.betavolt.tech/cp_1449509.html}{BV100} basée sur du Nickel-63 (\SixtyThreeNi). Celle-ci a une puissance de 100µW@3V pour 50 ans et supporterait une plage de température de \SIrange{-60}{120}{\celsius}.
+Une première application de niche pourrait être l'IoT\footnote{Internet of Things : L'internet des objets.} à très longue durée de vie. Cela posera des questions de réglementations et contraintes de sécurité liées aux risques radioactifs.
+\end{blogmain}
+\end{document}

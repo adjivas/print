@@ -1,0 +1,44 @@
+\RequirePackage{xstring}
+
+\newenvironment{resumemain}{}{}
+
+\newcommand{\neobar}[1]{}
+
+\newcommand{\bloglink}[2]{\href{#1.pdf}{#2}}
+\newcommand{\resumelink}[2]{\href{#1.pdf}{#2}}
+
+\newcommand{\resumeline}[1]{\vspace{-1.75em} \noindent{\color{#1}\rule{1.27\linewidth}{0.5pt}}}
+
+\newcommand{\resumename}[1]{{\Huge#1}}
+\newcommand{\resumefirstname}[1]{\hoeflertextengraved{#1}}
+\newcommand{\resumelastname}[1]{\hoeflertextengravedtwo{#1}}
+\newcommand{\resumetitle}[1]{{
+  \vspace{-35pt}
+  \mousevox{
+    \profilesvg{mouse}
+    \vspace{-10pt}
+  } {
+    % \profilesvg{navi}
+    \vspace{50pt}
+  }
+  \small
+  \hoeflertextregular{#1}
+}}
+\newcommand{\resumecontact}[1]{{
+  \vspace{-5pt}
+  \small
+  \hoeflertextregular{#1}
+}}
+\newcommand{\resumeblog}[1]{{
+  \vspace{-5pt}
+  \small
+  \hoeflertextregular{#1}
+  \vspace{-45pt}
+}}
+
+\newcommand{\amper}{{\itshape\&}}
+\newcommand\tabitem{\textbullet~}
+\newcommand\tabsubitem{\hspace*{2em}}
+
+\newcommand{\DTMdisplaydate}[2]{#1/#2}
+\newcommand{\DTMdoubledate}[4]{\DTMdisplaydate{#1}{#2} -- \DTMdisplaydate{#3}{#4}}

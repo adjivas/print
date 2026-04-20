@@ -1,0 +1,14 @@
+\renewcommand{\maketitle}{}
+\renewcommand{\vspace}[1]{}
+
+\newcommand{\multicols}[2]{#2}
+\newcommand{\lstset}[1]{#1}
+\newcommand{\arraybackslash}[0]{}
+
+\newstyle{article > header > h2}{
+  visibility: hidden;
+}
+
+\newstyle{code}{
+  font-size: initial;
+}

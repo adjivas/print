@@ -1,0 +1,233 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{verbatim}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \renewcommand{\thesection}{\arabic{section}.}
+  \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+
+  \lstset{
+    breaklines=true,
+    basicstyle=\fontsize{5}{6}\selectfont\ttfamily
+  }
+
+  % enumitem
+  \setlength{\topsep}{0\baselineskip}
+  \setlength{\itemsep}{-0.25\baselineskip}
+  \setlength{\leftmargin}{1em}
+  \setlength{\parsep}{0.25\baselineskip}
+
+  \newcommand{\multicolstable}[1]{\tiny#1}
+%END LATEX
+
+\title{
+  \blogtitle{De ArchLinux à Nix/NixOS}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article03.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Le monde de l'informatique est large, allant d'une diversité de systèmes Unix-like à des distributions Linux.
+Les configurer prend du temps, et nous réserve parfois de subtiles différences d'un environnement à un autre.
+
+Je vais vous parler de Nix, 
+De ce qui était au départ la thèse \href{https://edolstra.github.io/pubs/phd-thesis.pdf}{(2006, The Purely Functional Software Deployment Model)}, avec pour objectif principal de développer un système de déploiement logiciel correct qui garantisse que celui-ci soit complet et ne provoque pas d'interférences. \\
+De ce qui est devenu à la fois un langage pour décrire des OS de rêves et un incroyable gestionnaire de paquet universel.
+
+Aujourd'hui, sa communauté est en pleine expansion, le \href{https://discourse.nixos.org/t/nix-community-survey-2023-results/33124/26}{Survey 2023} indiquait un public majoritairement dans la fleur de l'age, composés de développeurs, DevOps et d'étudiants, tous très enthousiastes de Linux. Cette communauté anime régulièrement des conférences auprès de convention comme le \href{https://fosdem.org}{FOSDEM}, le Chaos Computer Club, ou encore sa propre convention qu'est la \href{https://2024.nixcon.org}{NixCon}.
+
+\begin{multicols}{2}
+\section{Nix et NixOS}
+Nix est portable, nous pouvons officiellement l'utiliser sous MacOS ou Linux.
+Il est donc possible de nixifier ses OS/distributions favoris
+
+Bien que Nix soit au dessus de la guerre des distributions, il existe une distribution NixOS
+
+Vous l'aurez compris, Nix ne doit pas être confondu avec NixOS.
+
+J'utilise personnellement la distribution NixOS sur toutes mes machines
+Je pourrais cependent envisager du Arch-nixifié pour du dev en C++, ou du MacOS-nixifié pour du pro
+
+\subsection{Nixpkgs}
+Ce qui fait une bonne distribution Linux est sans doute son gestionnaire de paquet.
+Le gestionnaire de paquet de Nix à des channels static release version (nixpkgs) et rolling release (nixpkgs-unstable).
+Nous pouvons donc choisir d'avoir des paquets en versions stables ou avancés.
+% https://wiki.nixos.org/wiki/Nixpkgs
+% https://www.reddit.com/r/NixOS/comments/107km3g/is_nixos_rolling_release_or_a_static_release/
+% https://nokomprendo.gitlab.io/posts/tuto_fonctionnel_47/2020-11-23-fr-README.html
+J'utilise par exemple l'un pour du serveur NixOS, et l'autre pour une station de jeu \& un environnement de dev NixOS.
+
+Selon \href{https://repology.org/repositories/statistics/total}{repology.org}, son gestionnaire de paquets offre le grand nombre de paquet disponible.
+Nix garantie par les teste que ces paquets listent bien toutes leurs dépendances.
+Ses tests de paquets sont très poussés, ceux-ci peuvent aller jusqu'à la de a validation d'apps dans des serveurs graphiques et des VM.
+% https://wiki.nixos.org/wiki/NixOS_VM_tests
+
+\subsection{Les Flakes}
+Une expérience toujours en court sous Nix est Flake, un nouveau format de paquet Nix.
+Celle-ci fût proposé par \href{https://edolstra.github.io}{@edolstra}, le créateur de Nix.
+Flake nous apporte une approche standardisé d'écrire des paquets indépendant des channels.
+Cela se présente comme un fichier flake.nix avec un input et un output, et un flake.lock qui sera le verrouillage de nos dépendances.
+L'input nous permets d'intégrer optionnellement des sources, pouvant provenir des channels Nix, de d'autres flakes, ou même de dépôts git.
+L'output nous permets d'écrire nos instructions installations. 
+
+Cette fonctionnalité a été très largement adopté par la communauté de Nix.
+Elle nous est utile pour faciliter l'intégration de modules communautaires Nix, pour empaqueter nos propres projets de code.
+
+% https://www.tweag.io/blog/2020-05-25-flakes/
+% https://gist.github.com/edolstra/40da6e3a4d4ee8fd019395365e0772e7
+
+Je l'utilise personnellement pour empaqueter mes projets Rust en Nix.
+Les paquets Nix/Flake avec leurs flakes.nix/flakes.lock sont très similaires aux projets Rust avec leurs cargo.toml/cargo.lock.
+Mes flakes se construiront sur les références indiqués par le cargo.lock, cela me permet donc de passer par Nix pour construire mes projets plutôt que Cargo.
+C'est le cas idéal, puisqu'en utilisant Nix comme gestionnaire de paquet global, cela me permet d'optimiser/de partager les dépendances Rust au niveau du système, d'avoir un environnement de build reproductible.
+
+\subsection{Les Modules}
+La communauté de Nix est très prolifique et a beaucoup à offrir.
+Celle-ci a développé de nombreux modules pour élargir le champ de ce qui est configurable.
+
+Je vais vous en mentionner quelqu'un :
+\begin{itemize}
+  \item \href{https://github.com/nix-community/fenix}{Fenix} pour déclarer nos toolschains et nos outils Rust
+  \item \href{https://gitlab.com/rycee/nur-expressions}{Firefox Add-ons} pour déclarer notres liste d'addon Firefox
+  \item \href{https://github.com/nix-community/nixvim}{NixVim} ou \href{https://github.com/NotAShelf/nvf}{Nvf} pour déclarer nos plugins et nos configurations NeoVim, je recommande plutôt Nvf qui est plus nixien dans son approche et avec lequel j'ai eu plus de facilité lors de l'installation d'un déboguer
+  \item \href{https://github.com/hall/kubenix}{Kubenix} pour manager du Kubernetes.
+  \item \href{https://github.com/ryantm/agenix}{Agenix} pour la gestion des secrets comme des mots-de-passe
+  \item \href{https://github.com/nix-community/disko}{Disko} pour déclarer les partitions et le formatage de nos disques
+  \item \href{https://github.com/nix-community/home-manager}{Home Manager} pour manager nos utilisateurs, pour déclarer très finement leurs configurations, leurs services systemd user, leurs listes de paquets.
+  \item \href{https://github.com/nix-community/impermanence}{Impermanence} pour déclarer quels répertoires rendre persistent dans une configuration amnésique.
+  \item \href{https://github.com/nix-community/lanzaboote}{Lanzaboote} qui est un récent projet pour contrôler d'intégrité du boot de NixOS.
+  \item \href{https://github.com/nix-community/nixos-generators}{NixOS-Generators} pour compiler nos configurations Nix en des images à destination de VM ou de machines.
+\end{itemize}
+
+\section{NixOS}
+NixOS apporte du déclaratif au niveau du système, avec les fichiers /etc/nixos/hardware-configuration.nix et /etc/nixos/configuration.nix il nous est possible de décrire quelle version du kernel Linux nous voulons, avec quels modules, quels services de SystemD nous souhaitons activer, quel sont les paquets du système, quel est le gestionnaire de bureau. quel est notre liste d'utilisateurs, quels sont leurs groupes, quels sont leurs paquets.
+Une fois notre description prête, nous pouvons la tester et/ou switcher avec les commandes nixos-rebuild test ou nixos-rebuild switch
+Si nous voulons revenir en arrière, nous pouvons rollback avec la commande nixos-rebuild --rollback switch, ou nous pouvons sélectionner une génération précédante au boot.
+
+Cette approche contraste avec l'expérience que nous avons d'une distribution Linux mainstream.
+
+\noindent{%
+\multicolstable{
+  \begin{tabular}{|C{1.5cm}|C{2cm}|C{3cm}|}
+    \hline \bf Tâche & \bf Ubuntu & \bf NixOS \\
+
+     \hline Installer NeoVim & apt-get install neovim & \multicolumn{1}{|L{3cm}|}{\ttfamily
+       cat <<EOF >> /etc/nixos/configuration.nix\par
+       environment.systemPackages = with pkgs;\par
+         [ neovim ]; EOF' \&\&\par
+       nixos-rebuild switch%
+     } \\
+
+     \hline Installer NeoVim pour un utilisateur & Impossible & \multicolumn{1}{|L{3cm}|}{\ttfamily
+       cat <<EOF >> /etc/nixos/configuration.nix\par
+       users.users.alice.packages = with pkgs;\par
+         [ neovim ]; EOF' \&\&\par
+       nixos-rebuild switch%
+     } \\
+
+    \hline Rechercher un paquet & apt-cache search neovim & \multicolumn{1}{|L{3cm}|}{
+      nix search nixpkgs neovim
+    } \\
+    \hline Mettre à jour sa liste de paquet & apt-get update & \multicolumn{1}{|L{3cm}|}{
+      nix-channel --update
+    } \\
+    \hline Mettre à jour ses paquets & apt-get upgrade & \multicolumn{1}{|L{3cm}|}{
+      nixos-rebuild switch
+    } \\
+    \hline
+  \end{tabular}
+}
+\captionof{table}{\href{https://nixos.wiki/wiki/Ubuntu_vs._NixOS}{Ubuntu vs. NixOS}}
+}
+
+\subsection{Non-FHS}
+La particularité de NixOS est qu'il à une implémentation minimale de la FHS, c'est-à-dire qu'il ne suit pas la norme de la hiérarchie des systèmes de fichiers maintenue par la Fondation Linux.
+
+% Picture or graph of: minimal FHS Nix vs FHS Linux
+
+C'est une force, cette norme a un défaut fondamental, les chemins de nos binaire/library sont /bin et /lib, ce modèle rend la coexistence de plusieurs versions de mêmes paquets plus difficile. Par exemples, certains paquets s'installent avec le gestionnaire de paquet de leurs langages plutôt que le gestionnaire de paquet global de l'OS, d'autres paquets comme ceux de python passent par des environnements virtuels.
+
+Ce que NixOS propose, c'est l'isolation des paquets.
+Ceux-ci sont installés à /nix/store, leurs noms sont des identifiants uniques dérivés des hashs de ces paquets, ce répertoire de paquet est monté en readonly.
+NixOS reprend le concept d'immutabilité, celui-ci ne modifie donc pas les paquets installés, il en ajoute de nouveaux, puis génère un nouvelle environnement système à /nix/var/nix/profiles.
+Le changement d'environnement est une opération atomique, c'est-à-dire réalisé en une seule étape, ce qui réduit les risques d'accidents.
+
+\subsection{L'amnésie}
+Lors de l'utilisation d'un OS, nos applications peuvent créer des caches, des configs, des logs, des db.
+Ces petites modifications peuvent changer l'état de notre OS, le rendant parfois variant.
+Des mises à jour radical d'application peuvent casser leurs compatibilités avec leurs propres caches.
+
+Ce qu'un développeur rêverait, c'est d'un OS prédictible, pour que son environnement de dev soit parfaitement reproductible.
+
+Une solution est d'avoir un OS amnésique
+NixOS peut démarrer uniquement avec les partitions /boot et /nix, la / peut être monté en tmpfs, elle sera donc vidée lors de chaque redémarrage.
+
+Le module \href{https://github.com/nix-community/impermanence}{Impermanence} nous permet de déclarer quels répertoires rendre persistent entre chaque redémarrage.
+Sa doc nous donne en exemple de garder quelques répertoires systèmes /var/log, /var/lib/..., /etc/NetworkManager/system-connections, l'id machine /etc/machine-id, et quelques dossiers de nos utilisateurs.
+
+J'utilise un NixOS avec l'amnésie + impermanence depuis quelques mois, j'y ai pris goût. Par exemple, je n'ai plus à me soucier de vider mon dossier Download, je ne me souci plus d'aller effacer tel dépôt git que j'ai cloné pour un test éclair. Ça m'a aidé à déclarer avec précisions toutes mes configurations d'apps. Ça m'est particulièrement agréable de savoir que je pars sur une base fraiche à chaque redémarrage.
+  
+% https://xeiaso.net/blog/paranoid-nixos-2021-07-18/
+ 
+\end{multicols}
+
+\section{Retour d'expérience}
+Nix a changé ma vision de ce que doit être un Linux.
+Ça un incroyable potentiel Infrastructure as code, je l'utilise personnellement pour mes propres serveurs et mes pipelines de CI/CD.
+Avec Nix, mes habitudes de développeur ont évolués.
+Je partage mes projets de code avec du Flakes plutôt que du Docker
+Je déclare dans Nix mes configs plutôt que de les écrire à la main.
+Lorsque je casse mon OS, je ne boot plus sur une clé de réparation d'ArchLinux, je boot sur une précédente génération de mon Nix.
+
+Mes difficultés ne furent pas la doc, lorsque j'ai besoin de doc, comme dans n'importe quel autre distribution Linux, je lis le Wiki de ArchLinux.
+J'ai plutôt eu du mal à construire certains environnements de dev, par exemple avec des plugins NeoVim, ou avec des libs C de graphismes comme glfw/glew/libglv, d'où le fais que je pourrais envisager du Arch Nixifié pour certaines missions.
+% https://dev.to/jasper-clarke/i-changed-my-mind-nixos-is-not-the-best-linux-1cpj
+À contrario, les infrastructures modernes comme du Rust sont correctement implémentés.
+
+
+\section{Le Futur de Linux}
+
+Essayons d'imaginer un Linux next-gen
+L'un des sujets sera le gestionnaire de paquet universel, celui-ci unira les distributions, voir les OS
+J'en ai observé de deux sortes, les déclaratifs comme Nix, GNU Guix influancé par Nix, BlendOS, qui sont issues du monde de la recherche et du logiciel libre, et les conteneurisés comme Flatpak, Snap, AppImage, Docker qui sont issues du monde des entreprises et de l'open source.
+
+C'est deux approches sont différentes, les déclaratives résolvent les problèmes des systèmes Unix/de la FHS que nous avons abordés, les conteneurisés les évitent par la construction d'environements isolés.
+
+Les deux nous apporte la rejouabilitée, c'est finalement plus un choix entre l'approche new school ou old school.
+
+Un autre sujet sera l'immuabilité de notre système, celle-ci implique que pour le modifier, nous devons en construire un nouveau, afin de basculer dessus en une opération atomique.
+C'est une pratique qui nous ajoute une incroyable sécurité industrielle, celle de pouvoir revenir à un état précédant à tout moment, en particulier après un accident.
+C'est déjà proposé par des distributions comme NixOS, GNU Guix, SteamOS, GnomeOS, ou encore la variante Silverblue de Fedora. Une solution comme \href{https://github.com/ashos/ashos}{ashos} permet de l'étendre à des distributions qui n'ont pas nativement une telle fonctionalitée.
+\end{blogmain}
+\end{document}

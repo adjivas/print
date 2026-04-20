@@ -1,0 +1,147 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \renewcommand{\thesection}{\arabic{section}.}
+  \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+%END LATEX
+
+\title{\mousevox{
+  \blogtitle{Des Sous-Verres façon Furry au laser}
+} {
+  \blogtitle{Des Sous-Verres en Cuir au laser}
+}}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article01.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+\begin{multicols}{2}
+  Dans l'\bloglink{article00.fr}{Article00}, nous avons appris à nous préparer des cafés froids.
+  
+  Lors d’un service de café, de petites quantités de cafés peuvent glisser des bords des tasses
+  Ces cafés froids ont une différence de température avec l'air ambiante, de la vapeur d'eau peut se condenser sur les surfaces de leurs tasses
+  
+  Dépendamment de la forme de la tasse, cela formera un rond de café.
+  % https://www.wikidata.org/wiki/Q1516851
+  
+  Les sous-verre sont une solution triviale à ce problème
+  
+  Ceux-ci sont fabriqués avec divers matériaux, généralement du carton, parfois du cuir.
+  Ceux-ci sont généralement de formes rondes, parfois avec des motifs.
+  
+  Leurs fabrications me semble être un bon exercice pour progresser en dessin, pour en apprendre plus sur le cuir, pour apprendre à utiliser un laser sur du cuir. Et pour avoir des sous-verres personnalisés.
+  
+  J'ai utilisé \href{https://inkscape.org}{Inkscape} pour dessiner des motifs inspirés des lattes de café. Ce logiciel à des fonctionnalités très utiles, je me suis beaucoup servi de Path Effects comme le Rotate Copies.
+
+  \simpleschemas{.4}{coffee-cat}{motif d'un chat sur ses lattes de café}
+
+  
+  
+  Je me suis fourni du cuir auprès de plusieurs grossistes parisiens :
+  \begin{itemize}
+    \item Chadefaux Ets\footnote{\href{https://cuirschadefaux.com}{Chadefaux Ets}, 18 Rue Taylor, 75010 Paris}, pour des chuttes et bobines de cuir tannage végétal\footnote{Le cuir tannage végétal est fabriqué avec peau pré-traitée qui sera trempée dans des bains de tanin successifs durant plusieurs semaines.}
+    \item Emporte Pièce du Marais\footnote{\href{https://cuirsdepaname.fr/collections/cuirs-classiques}{Emporte Pièce du Marais}, 86 Rue des Archives, 75003 Paris}, pour des chutes de cuir tannage végétal
+    \item Ancien Accessoire Parisien\footnote{\href{https://accessoire-parisien.com}{Ancien Accessoire Parisien}, 98 Bd Richard-Lenoir, 75011 Paris}, pour de l'imperméabilisant, des chutes de peausserie
+  \end{itemize}
+  
+  Une alternative serait La Réserve des arts, nouvellement installé à Montreuil.
+  Celle-ci est une association pour une création circulaire et solidaire d'Île-de-France
+
+  Les chutes de cuir tannage végétal sont idéales pour des tests, elles peuvent avoir plus de défauts que des bobines de cuir, elles sont moins chères que des bobines de cuir.
+  Les chutes peausserie sont plus épaisses que le cuir, elles sont plus dures à découper au laser, elles sont non traitées, elles sont beaucoup moins coûteuses que le cuir, elles se vendent au kg.
+
+  \section{La gravure}
+  
+  J'ai utilisé les découpeuses lasers du Fab Lab Carrefour numérique²\footnote{\href{https://www.cite-sciences.fr/fr/au-programme/lieux-ressources/carrefour-numerique2/fab-lab}{Carrefour numérique²}, Cité des Sciences et de l'Industrie, 30 Av. Corentin Cariou, 75019 Paris} de la Cité des Sciences et de l'Industrie
+  C'est un Fab lab grand public, très accueillant
+  
+  Ses découpeuses lasers sont des Fusion Pro 48 d'Epilog (120W), anciennement des Speedy 300 A (65W).
+  Celle-si peuvent aujourd'hui être gratuitement réservés par slot d'1h
+  À titre indicatif, d'autres fablabs/des entreprises proposent habituellement une réservation à 50euros/h
+  
+  Selon le niveau de détail du motif, fabriquer à l'unité des sous-verre prend entre 5mn à 15mn montre.
+  Graver en série plusieurs sous-verre permet bien-sûr de gagner du temps, tant que les pièces de cuir partageant une même hauteur bien-sûr.
+  Il est possible de graver des surfaces avec plus ou moins de précisions/de points, ce qui peut nous permettre d'avoir plusieurs niveaux de seuillages.
+  Lors de la découpe, le cuir à une odeur brulée particulière, c'est à cela que ça se reconnait.
+  Je recommande de protéger la pièce des fumées de découpe avec du scotch de peintre.
+
+  \vspace{85mm}
+  
+  Le travail du cuir au laser peut donner des résultats très différents, voici quelques exemples :
+  
+  \multimages{
+    \simpleimage{.4}{coffee-cat-natural-leather-3mm}{cuir naturel 3mm}
+    \simpleimage{.4}{coffee-cat-blue-leather-3mm}{cuir bleu 3mm}
+    \simpleimage{.4}{coffee-cat-red-leather-3mm}{cuir rouge 3mm}
+    \simpleimage{.4}{coffee-cat-orange-leather-3mm}{cuir orange 3mm}
+    \simpleimage{.4}{coffee-cat-brown-leather-3mm}{cuir marron  3mm}
+    \simpleimage{.4}{coffee-cat-hide-4mm}{peausserie camel 4mm}
+    \simpleimage{.4}{coffee-cat-hide-5mm}{peausserie nat. 5mm}
+  }
+
+  La gravure permet d'avoir du relief sur son cuir, nous perdons cependant le motif cuir.
+
+\end{multicols}
+
+\newpage
+\section{La peinture (effet chrome)}
+J'ai testé d'autres techniques de coloration que la gravure, tel que de la peintre au pinceau, au marqueur liquide ou à la bombe aérosol.
+Elles m'ont semblé équivalentes en avantage, elles gardent plus que moins le motif cuir selon le nombre de couches.
+
+J'applique ces techniques avec un pochoir que j'improvise en découpant au laser du scotch de peintre collé sur mes pièces.
+Cela me permet de peindre plus rapidement au pinceau ou marqueur liquide, ou d'utiliser un aérosol.
+
+J'ai choisi par curiosité une coloration à effet chromé.
+% TODO add liste des produits avec résultas
+\begin{itemize}
+  \item \href{https://molotow.fr/marqueur-effet-miroir-molotow-liquid-chrome.html}{Marqueur Molotow à chrome liquide}
+  \item \href{https://www.stardustcolors.com/peinture-chrome/1274-chrome-brush-peinture-chrome-au-pinceau.html}{GO Chrome miroir}
+\end{itemize}
+
+Lors de l'application, ces liquides peuvent former de la marbrure, il peut être nécessaire de souffler un peu.
+
+Cela m'a autant convaincu que le brillant de feuille d'argent utilisé en dorure.
+
+Je vous ai parlé d'effet Chrome parce qu'un effet miroir nécessite une surface lisse/poli, ce que le cuir n'est pas.
+Je vais à ce sujet expérimenter une prochainement par incrustation de pièces imprimées en PLA sur un cuir.
+
+% Col d'incrustation
+% https://www.decocuir.com/products/colle-contact-base-aqueuse-intercom-ecostick-1816b
+
+\section{Conclusion}
+Lorsque j'avais réalisé mes premiers sous-verres, j'étais super enthousiaste, un peu trop, j'en ai fabriqué pour beaucoup de mes amis, avec beaucoup de variante !
+
+Avec de la peausserie de 5mm, j'ai pu en bonus me fabriquer des sous-plats.
+
+Mes projets suivants furent la réalisation de ceintures et de portes clés de ceintures personnalisées.
+
+
+\end{blogmain}
+\end{document}

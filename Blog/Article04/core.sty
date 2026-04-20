@@ -1,0 +1,91 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{hearticle}[2013/01/13 Custom Package]
+
+\input{tex/util.sty}
+\input{tex/font.sty}
+\input{tex/fancy.sty}
+\input{tex/profile.sty}
+\input{tex/license.sty}
+
+% ressources/ext-50-black-leopard.tex
+\definecolor{color_29791}{rgb}{0,0,0}
+\definecolor{color_157022}{rgb}{0.501961,0.501961,1}
+\definecolor{color_37951}{rgb}{0,1,1}
+\definecolor{color_155902}{rgb}{0.498039,0.498039,0.498039}
+
+% ressources/tab-35-tiger.tex
+\definecolor{color_278473}{rgb}{1,0.458824,0}
+\definecolor{color_29791}{rgb}{0,0,0}
+\definecolor{color_37951}{rgb}{0,1,1}
+\definecolor{color_155902}{rgb}{0.498039,0.498039,0.498039}
+\definecolor{color_157022}{rgb}{0.501961,0.501961,1}
+
+% ressources/belt-50-black-leopard.tex
+\definecolor{color_29791}{rgb}{0,0,0}
+\definecolor{color_157022}{rgb}{0.501961,0.501961,1}
+\definecolor{color_275101}{rgb}{1,0,1}
+\definecolor{color_37951}{rgb}{0,1,1}
+\definecolor{color_155902}{rgb}{0.498039,0.498039,0.498039}
+
+% ressources/belt-35-tiger.tex
+\definecolor{color_278783}{rgb}{1,0.498039,0}
+\definecolor{color_29791}{rgb}{0,0,0}
+\definecolor{color_29796}{rgb}{0,0,0.019608}
+\definecolor{color_37951}{rgb}{0,1,1}
+\definecolor{color_37858}{rgb}{0,0.988235,1}
+\definecolor{color_37920}{rgb}{0,0.996078,1}
+\definecolor{color_157022}{rgb}{0.501961,0.501961,1}
+\definecolor{color_155902}{rgb}{0.498039,0.498039,0.498039}
+
+% Figure
+\definecolor{cea00fb}{gray}{0.6}
+\definecolor{cf80000}{gray}{0.6}
+
+\RequirePackage{graphicx}
+\graphicspath{{./ressources/}}
+\newcommand{\includeimage}[2]{
+  \dimendef\prevdepth=0
+  \begin{figure}[H]
+    \centering
+    \subfloat{
+      \includegraphics{#1}
+    }
+    \caption{#2}
+  \end{figure}
+}
+
+% Belt
+\RequirePackage{graphicx}
+\RequirePackage{subfig}
+
+\newcommand{\includebeltschemas}[2]{
+  \dimendef\prevdepth=0
+  \begin{figure}[H]
+    \centering
+    \subfloat {
+      \resizebox{\textwidth}{!}{
+        \begin{tikzpicture}[y=1cm, x=1cm, inner sep=0pt, outer sep=0pt]
+          \input{ressources/#1.tex}
+        \end{tikzpicture}
+      }
+    }
+    \caption*{#2}
+  \end{figure}
+}
+
+\newcommand{\includeschemas}[3]{
+  \dimendef\prevdepth=0
+  \begin{figure}[H]
+    \centering
+    \subfloat {
+      \resizebox{!}{#3}{
+        \begin{tikzpicture}[y=1cm, x=1cm, inner sep=0pt, outer sep=0pt]
+          \input{ressources/#1.tex}
+        \end{tikzpicture}
+      }
+    }
+    \caption*{#2}
+  \end{figure}
+}
+
+\endinput

@@ -1,0 +1,181 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{unicode-math}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+%END LATEX
+
+\title{\mousevox{
+  \blogtitle{De NixOS à MouseOS}
+} {
+  \blogtitle{De NixOS à NaviOS}
+}}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article07.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+
+La distribution que je vais vous présenter est NaviOS.
+about-mouseos{Extrait de GNOME Settings}
+}{
+  \simpleschemas{.4}{about-navios}{Extrait de GNOME Settings}
+}
+% TODO Ajouter gnome-call et gnome-boxes
+C'est ma première distribution basée sur NixOS. Elle s'en distingue par sa philosophie de Recovery\footnote{Recovery : capacité à restaurer un système.}. Je l'ai spécialisée pour mon propre usage, c'est-à-dire de la programmation, du multi-seats\footnote{Multi-seats : multi-utilisations simultanées d'un système.} pour du travail coopératif (voir \bloglink{article06.fr}{article06}), de la téléphonie Linux et de la virtualisation.
+
+Je vous la partage pour que vous puissiez reprendre ses idées dans vos NixOS ou dérivés, pour vous encourager à créer vos propres distributions et installateurs basés sur NixOS.
+
+  Le terme Distribution Linux désigne un système d’exploitation construit autour du noyau Linux, d'un ensemble d'outils (un installateur) et de programmes (un gestionnaire de paquets, un shell, parfois des interfaces graphiques...). Les premières distributions sont apparues au début des années 90 pour faciliter le partage de systèmes Linux. Ces distributions peuvent être indépendantes ou basées sur d'autres. Ce qui les distingue, ce sont leurs philosophies et leurs grands concepts tels que du \href{https://fr.wikipedia.org/wiki/Rolling_release}{rolling release} pour Archlinux ou du \href{https://nixos.wiki/wiki/Declaration}{déclaratif} pour NixOS.
+
+\newpage
+\mousevox{\section{L'infrastructure MouseOS}}{\section{L'infrastructure NaviOS}}
+L'idée principale de mon NaviOS est de pouvoir se déployer sur demande à un état déclaré avec du Nix, que ce soit sur sa propre machine ou les suivantes.
+Cette capacité de déploiement/de Recovery de NaviOS est pensée pour réagir rapidement face à des accidents de sécurité ou de matériel (de la compromission des droits root ou de la perte d'un disque système/de la machine elle-même).  \\
+Ce déploiement se veut le plus complet possible, celui-ci doit livrer un environnement de dev opérationnel et provisionner des secrets tels que des clés SSH, des mots de passe de sessions, de navigateur avec \href{https://github.com/passff/passff}{PassFF}\footnote{PassFF : gestionnaire de mot de passe local pour Firefox}, de Wifi... \\
+J'utilise plus particulièrement \href{https://github.com/ryantm/agenix}{Agenix} basé sur \href{https://github.com/filosottile/age}{AGE} qu'est système de gestion des secrets. Celui-ci permet à des modules NixOS ou Home-Manager d'accéder à des secrets sans les exposer dans le \textit{/nix/store}.
+\\
+NaviOS est un environnement desktop déclaré en Nix (qu'est une forme d'\href{https://fr.wikipedia.org/wiki/Infrastructure_as_code}{infrastructure as code} utilisée dans l’administration de serveurs). \\
+Son code est publié en source ouverte sur mon dépôt Git : framagit.org/mouse/nix}{\href{https://github.com/adjivas/NaviOS}{github.com/adjivas/NaviOS}}. \\
+\\
+Ce que je vous propose est de vous présenter comment j'ai décliné NixOS en une distribution et un installateur. Avec quel modèle de défense les mots de passe sont provisionnés durant l'installation.
+
+\newpage
+\subsection{Distribution basée sur NixOS}
+
+Nous aurons plusieurs étapes à réaliser, telles que déclarer un nom stylé de distribution, nos configurations, nos programmes et services. \\
+La \href{https://nixos.wiki/wiki/Overview_of_the_NixOS_Linux_distribution}{distribution NixOS} est facile à adapter en raison de son paradigme déclaratif, le Wiki \href{https://nixos.wiki/wiki/NixOS-based_distributions}{NixOS-based distributions} recense plusieurs déclinaisons. \\
+\\
+Nous déclarons notre nom de distribution en surchargeant les options Nix \textit{system.nixos.distroName} et \textit{system.nixos.distroId}, en créant notre propre fichier d'identifications système \href{https://www.freedesktop.org/software/systemd/man/latest/os-release.html}{/etc/os-release} :
+Déclaratif de la distribution MouseOS
+}{
+  \includesnippet{navios-release}{Déclaratif de la distribution NaviOS}
+}
+% TODO considérer d'ajouter des commentaires pour plus documenter ce code
+
+\newpage
+Nos programmes et services se déclarent comme d'habitude avec de la \href{https://wiki.nixos.org/wiki/NixOS_system_configuration}{configuration NixOS native}.
+
+Dans le cas de NaviOS, celui-ci a sans doute un environnement de travail semblable au vôtre :
+\begin{itemize}
+  \item L'émulateur de terminal \href{https://sw.kovidgoyal.net/kitty}{Kitty}.
+  \item \href{https://github.com/NotAShelf/nvf}{NotAShelf/nvf} -- Un Neovim avec une liste de plugins.
+  \item Quelques programmes de graphisme (Blender, Krita).
+  \item Quelques programmes de CAO (FreeCAD, KiCAD, Inkscape, Qgis).
+  \item Des utilitaires Gnome tels que gnome-control-center, contact, Call pour les appels téléphoniques, Chatty pour les SMS.
+  \item \href{https://gitlab.com/rycee/nur-expressions?dir=pkgs/firefox-addons}{rycee/nur-expressions} -- Un navigateur Firefox avec une liste de plugins pré-installés, dont PassFF.
+  \item De la virtualisation Qemu avec \href{https://github.com/j-brn/nixos-vfio}{nixos-vfio} pour de la VFIO clé en main pour du GPU Passthrough, avec \href{https://github.com/AshleyYakeley/NixVirt}{NixVirt}/\href{https://github.com/microvm-nix/microvm.nix}{MicroVM} pour déclarer des VM et micro-VM.
+  \item Un \href{https://swaywm.org}{Sway}\footnote{Sway est un \href{https://fr.wikipedia.org/wiki/Gestionnaire_de_fen\%C3\%AAtres_par_pavage}{gestionnaire de fenêtre par pavage}} qui pourra être remplacé par \href{https://niri-wm.github.io/niri/}{Niri}\footnote{Niri est un gestionnaire de fenêtres à pavage défilable.}.
+  \item Des animations de démarrage avec \href{https://github.com/adi1090x/plymouth-themes}{adi1090x/plymouth-themes}.
+  \item Le serveur Pixiecore pour partager en réseau local mon image d'installation de NaviOS.
+  \item \href{https://github.com/nix-community/impermanence}{nix-community/impermanence} -- Un module Nix permettant de déclarer quels fichiers et répertoires restent persistants sur un système éphémère.
+  \item \href{https://github.com/xddxdd/nix-cachyos-kernel}{xddxdd/nix-cachyos-kernel} -- Un kernel Linux-CachyOS avec planificateur optimisé pour du gaming Linux, du Desktop réactif.
+\end{itemize}
+
+\newpage
+\subsection{Installateur basé sur NixOS}
+NixOS comme nombre d'autres distributions propose de la documentation pour nous aider à personnaliser nos images d’installation. \\
+L'article \href{https://wiki.nixos.org/wiki/Creating_a_NixOS_live_CD}{Creating a NixOS live CD} nous indique comment déclarer la nôtre.
+
+L'infrastructure navios peut à la fois fabriquer une image destination d'une clé USB ou du réseau.
+\includesnippet{usb-system}{Déclaratif de l'ISO}
+\includesnippet{net-system}{Déclaratif d'une image Netboot (voir \href{https://nixos.wiki/wiki/Netboot}{Building and serving a netboot image})}
+
+L'image d'installation de NaviOS ajoute en particulier :
+\begin{enumerate}
+  \item des dépôts Git de secrets système et utilisateurs.
+  \item une clé rouge qui pointe vers une Yubikey qu'est une clé électronique de déchiffrement.
+  \item son code source Nix.
+  \item une configuration d'un cache Nix (voir \href{https://nixos.wiki/wiki/Binary_Cache}{Binary Cache}).
+  \item la procédure d'installation.
+\end{enumerate}
+
+J'utilise une clé électronique pour ne pas exposer en clair une clé de déchiffrement dans une image d'installation.
+
+La procédure d'installation de NaviOS suit les étapes suivantes :
+\begin{enumerate}
+  \item Utiliser la clé rouge pour déchiffrer la clé bleue.
+  \item Utiliser cette clé bleue pour déchiffrer le secret du mot de passe disque.
+  \item Utiliser le schéma \href{https://github.com/nix-community/disko}{Disko} pour formater/chiffrer le disque en LUKS selon ce mot de passe disque, partitionner en BTRFS et configurer l'amnésie.
+  \item Ajouter à NaviOS la clé bleue et les dépôts Git de secrets système et utilisateur.
+  \item Installer NaviOS.
+  \item Redémarrer.
+\end{enumerate}
+
+Celle-ci peut prendre une vingtaine de minutes, plus particulièrement parce que mes navios partagent leur cache, ce qui facilite la fabrication d'un \textit{/nix/store}.
+
+\section{L'infrastructure secrète}
+Je vous ai présenté une infrastructure qui manipule des secrets, qui construit des systèmes et des paquets.
+Celle-ci est partagé entre plusieurs dépôts Git publics pour le code Nix et privés pour les secrets AGE.
+
+Jusqu'à présent mon approche avait été de consulter des articles de sécurité sur les distributions que j'utilisais, de lire des articles de blog comme \href{https://xeiaso.net/blog/paranoid-nixos-2021-07-18}{Paranoid NixOS Setup}.
+Je ne me suis pas spécialisé en sécurité, j'ai eu besoin d'en discuter davantage et d'étudier les approches adoptées par d’autres.
+
+\href{https://github.com/Wyshteria}{Wyshteria} (Kali) m'a appris que la première phase d'un attaquant est la reconnaissance (\href{https://fr.wikipedia.org/wiki/Footprinting}{footprinting}), c'est-à-dire l'étude des informations exploitables. \\
+Dans une infrastructure, cela peut être :
+\begin{enumerate}
+  \item configurations et permissions incorrectes.
+  \item des services vulnérables documenté comme tel par des CVE.
+  \item la liste des secrets utilisés.
+\end{enumerate}
+
+Cela peut être limité par de la relecture de code afin de correctement utiliser des services et de ne pas exposer trop d'informations sur leurs secrets.
+
+En consultant la documentation \href{https://projects.govanify.com/govanify/navi/-/blob/master/docs/secrets.txt?ref_type=heads}{"Secret"} de l'infrastructure Navi de \href{https://github.com/GovanifY}{GovanifY} (Govin), j'ai appris que je pouvais me prévenir de l'exposition de la liste des secrets avec \href{https://github.com/AGWA/git-crypt?tab=readme-ov-file#readme}{gitcrypt} (ou \href{https://github.com/vlaci/git-agecrypt}{git-agecrypt}). \\
+Ces secrets peuvent être stocké dans un dépôt Git privée, leurs noms de fichiers constituent cette liste. \\
+L'idée est donc de chiffrer leurs dossiers pour qu'une fuite du dépôt privée n'expose pas cette information.
+
+
+  J'ai été amusé de découvrir la similitude des noms de nos projets Navi et NaviOS, il s'agit d'un hasard favorisé par deux fans de Zelda.
+
+
+\section{Retour d'expérience}
+J'utilise NaviOS sur ma station de travail. Depuis quelques mois c'est devenu mon environnement de dev principal pour mes projets personnel. \\
+NixOS est très agréable à adapter, j'apprécie que ma distribution soit basée sur un environnement aussi facile à maintenir.
+La propriété de système éphémère de NaviOS m'a aidé à rendre son déclaratif le plus complet possible.
+La brique de virtualisation de NaviOS m'a aidé à déclarer une machine virtuelle de validation de mon installateur en boot PXE. \\
+\\
+Je ne prévois pas d'utiliser ma distribution pour administrer des machines de devs ou de pingouins. Je préfère vous encourager à créer la vôtre pour faciliter votre apprentissage de Linux. \\
+\\
+Créer sa propre distribution Linux n'est pas exceptionnel en soi. Les estimations du nombre de distributions actives iraient jusqu'à 278 selon le journal \href{https://lwn.net/Distributions}{LWN} et 393 selon le site web d'actualité \href{https://distrowatch.com/weekly.php?issue=20251117}{DistroWach}.
+Mon expérience du sujet était le projet LFS (Linux From Scratch) de l'école 42 qui m'a appris à créer ma propre distribution Linux sans me baser sur une autre. Ce sujet est un prérequis du module de développement kernel.
+
+% Hydra
+% `nix-store --verify --check-contents`
+% aspect Recovery over forensics
+
+% Hydra
+
+% 
+% % TODO : Parler de `nix-store --verify --check-contents`, de l'aspect Recovery over forensics
+\end{blogmain}
+\end{document}

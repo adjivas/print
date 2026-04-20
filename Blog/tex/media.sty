@@ -1,0 +1,51 @@
+\RequirePackage{tikz}
+
+\RequirePackage{graphicx}
+\RequirePackage{subfig}
+
+\graphicspath{{./ressources/}}
+
+\newcommand{\simpleimage}[3]{
+  \dimendef\prevdepth=0
+  \begin{figure}[H]
+    \centering
+    \subfloat{\includegraphics[width=#1\linewidth]{#2}}
+    \caption*{#3}
+  \end{figure}
+}
+\newcommand{\doubleimage}[5]{
+  \begin{multicols}{2}
+    \simpleimage{#1}{#2}{#3}
+    \simpleimage{#1}{#4}{#5}
+  \end{multicols}
+}
+\newcommand{\multimages}[1]{
+  \begin{multicols}{2}
+  #1
+  \end{multicols}
+}
+
+\newcommand{\simpleschemas}[3]{
+  \dimendef\prevdepth=0
+  \begin{figure}[H]
+    \centering
+    \subfloat {
+      \resizebox{#1\columnwidth}{!}{
+        \begin{tikzpicture}[y=1cm, x=1cm, inner sep=0pt, outer sep=0pt]
+          \input{ressources/#2.tex}
+        \end{tikzpicture}
+      }
+    }
+    \caption*{#3}
+  \end{figure}
+}
+
+\newcommand{\simplevideo}[3]{
+  \begin{figure}[H]
+    \centering
+    \href{#2}{
+      \includegraphics[width=#1\columnwidth]{#2}
+    }
+    \caption{#3}
+  \end{figure}
+}

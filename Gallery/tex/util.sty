@@ -1,0 +1,24 @@
+\RequirePackage{xstring}
+
+\newenvironment{gallerymain}{}{}
+
+\newcommand{\neobar}[1]{}
+
+\newcommand{\bloglink}[2]{
+  \href{#1/blog.fr.pdf}{#2}
+}
+\newcommand{\resumelink}[2]{
+  \href{#1/resume.fr.pdf}{#2}
+}
+\newcommand{\contactlink}[2]{
+  \href{#1/contact.fr.pdf}{#2}
+}
+
+\newcommand{\gallerytitle}[1]{
+  \vspace{-50pt}%
+  \mousevox{
+    \profilesvg{mouse}
+  } {
+    \profilesvg{navi}
+  } \gothic{\Huge{#1}}
+}

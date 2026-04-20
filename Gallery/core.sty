@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{hevgallery}[2013/01/13 Custom Package]
+
+\input{tex/util.sty}
+\input{tex/font.sty}
+\input{tex/profile.sty}
+
+\RequirePackage{graphicx}
+
+\graphicspath{{./ressources/}}
+
+\newcommand{\includethreeimages}[9]{
+  \begin{figure}[!b]
+    \centering
+    \subfloat[#3]{\includegraphics[width=.2\textwidth]{#2}}
+    \qquad
+    \subfloat[#6]{\includegraphics[width=.2\textwidth]{#5}}
+    \qquad
+    \subfloat[#9]{\includegraphics[width=.2\textwidth]{#8}}
+  \end{figure}
+}
+
+\newcommand{\includetwoimages}[6]{%
+  \begin{figure}[!b]
+    \centering
+    \subfloat[#3]{\includegraphics[width=.2\textwidth]{#2}}
+    \qquad
+    \subfloat[#6]{\includegraphics[width=.2\textwidth]{#5}}
+  \end{figure}%
+}
+
+\newcommand{\includeimage}[3]{
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{#2}
+    \captionsetup{width=0.2\textwidth}
+    \caption{#3}
+  \end{figure}
+}
+
+\RequirePackage{tikz}
+
+\tikzset{tagblock/.style={
+  rounded corners, rectangle, draw,
+  inner sep=3pt, outer sep=0pt
+}}

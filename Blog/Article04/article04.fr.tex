@@ -1,0 +1,116 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\usepackage{graphicx}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \lstset{breaklines=true}
+%END LATEX
+
+\title{
+  \blogtitle{Des ceintures tigres et panthères !}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article04.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Dans l'\bloglink{article01.fr}{Article01} sur les sous-verres, nous avons appris à graver/découper au laser, à peindre au pinceau ou à la bombe aérosol.
+Ce sont des pièces très bien pour commencer, pour obtenir rapidement des résultats.
+Certains projets comme la fabrication de ceinture nécessitent d’apprendre à travailler les tranches et à monter des ferrures.
+
+Je vous propose aujourd'hui de découvrir comment fabriquer des ceintures, stylisées avec des rayures de tigre ou avec un motif neutre de panthère noir.
+Ce que je recherchais était une ceinture robuste, qui convienne au port d'outil comme une batterie à plomb, qui soit imperméabilisé.
+
+Puisque je n'avais jamais conçu de patron de ceinture, j'ai étudié celle que je portais, j'ai reproduit ce plan :
+
+\includebeltschemas{belt-35-tiger}{Tigre 3,5cm, trous traversants ronds}
+\includeschemas{tab-35-tiger}{Boucle universelle simple}{1cm}
+
+J'ai par la suite compris que les boucles que j'utilisais pouvaient être à rouleau pour mieux glisser, à ardillons doubles pour mieux supporter le poids d'outils lourds. Que leurs trous traversants devraient être de forme ovale pour mieux correspondre aux ardillons d'une boucle à rouleau, que ces trous traversants ovales pouvaient être métallisés avec des ferrures pour réduire le stress mécanique de la charge des outils.
+
+J'ai donc pu m'adapter ce patron :
+
+\includebeltschemas{belt-50-black-leopard}{Panthère noire 5cm, boucle à double ardillons, trous traversants ovales}
+\includeschemas{ext-50-black-leopard}{Extension passant}{1.5cm}
+
+Mes étapes de fabrications sont :
+\begin{itemize}
+  \item Graver le cuir avec le motif tigre
+  \item Découper au laser sur la surface de cuir les contours de la ceinture 
+  \item Appliquer une gomme de finition sur les tranches/la croûte, imperméabiliser le cuir
+  \item Monter les ferrures
+\end{itemize}
+
+\begin{multicols}{2}
+
+\section{Les tranches}
+Les tranches sont les bords du cuir.
+
+Mes premières versions de ceinture tigres avaient des tranches à nu, cela leurs donnes un style particulièrement brutal qui a sa beauté.
+Ce n'est cependant pas une bonne idée pour la durée de vie de nos ceintures.
+Ces tranches à nu sont poreuses à l'humidité, ce qui comprend notre sueur, celle-ci a des sels/acides qui sont corrosifs pour le cuir.
+
+Un traitement recommandé est d'appliquer une gomme de finition.
+Ça donnera aux tranches un aspect plus lisse qui les rendront plus étanches, et qui nous aidera à mieux les imperméabiliser.
+
+Une gomme de finition peut aussi avoir une fonction esthétique.
+Certaines gommes de finition sont colorées, d'autres peuvent être mélangés avec une teinture à base aqueuse
+C'est optionnellement applicable à la croûte pour uniformiser la couleur, pour presser ses fibres.
+
+J'ai testé la \href{https://www.decocuir.com/blogs/blog-tutoriel-patron-cuir/tokonole-gomme-cuir-brunir-tranche}{Tokonole} qui m'a convenu.
+
+Ça s'applique avec un brunissoir.
+Étant d'un naturel pressé, j'ai préféré un \href{https://www.decocuir.com/products/rouleau-depose-teinture-tranche-cuir-ceinture-anse-bords}{rouleau applicateur de peinture}.
+
+\section{Les ferrures}
+Les ferrures sont des pièces métalliques
+Avec une ceinture, celles-ci sont la boucle, les rivets pour la fixer, optionnellement un passant et des œillets pour les ardillons de boucle.
+Ces métaux peuvent par exemple être de l'acier, du laiton plaqué nickel, du zamak, de l'Inox, \dots
+
+Aujourd'hui, j'utilise idéalement des ferrures en Inox 316L, elles sont plus résistantes à l'oxydation, ne nécessitant pas de placages qui se craquelleraient lors de chocs répétés.
+Celles-ci nécessitant cependant des techniques de moulages plus complexes, elles sont donc simplifiées, moins répandus/plus coûteuses.
+J'en ai beaucoup appris sur ce sujet grâce à cet article \href{https://la-mode-a-l-envers.loom.fr/blog/cette-ceinture-vous-survivra}{Cette ceinture vous survivra} de la société \href{https://www.loom.fr/}{Loom}
+
+\end{multicols}
+
+J'en ai appris d'avantage sur le travail du cuir.
+Ça m'a demandé de travailler avec la longueur maximale du plateau de découpe.
+
+\includeimage{photo-35-tiger}{Modèle Tigre}
+\includeimage{photo-50-black-leopard}{Modèle Panthères}
+
+J'ai en bonus fabriqué des portes clés de ceintures personnalisées.
+
+De futurs projets avec le cuir pourraient impliquer de la couture, de l'imperméabilisation avec de la graisse marine.
+\end{blogmain}
+\end{document}

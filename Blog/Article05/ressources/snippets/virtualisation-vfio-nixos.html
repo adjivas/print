@@ -1,0 +1,14 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> specialisation.vfio-passthrough.configuration = <span style="color:#990000">{</span>
+<a name="line2"><span>02:</span></a>   boot.kernelModules = <span style="color:#990000">[</span>
+<a name="line3"><span>03:</span></a>     "vfio" "vfio-pci" "vfio_iommu_type1"
+<a name="line4"><span>04:</span></a>   <span style="color:#990000">]</span>;
+<a name="line5"><span>05:</span></a>   boot.extraModprobeConfig = ''
+<a name="line6"><span>06:</span></a>     options vfio-pci ids=<span style="color:#993399">1002</span>:744c<span style="color:#990000">,</span><span style="color:#993399">1002</span>:ab30 # GPU RX7900 GRE<span style="color:#990000">,</span> Navi <span style="color:#993399">31</span>
+<a name="line7"><span>07:</span></a>     options kvm ignore_msrs=<span style="color:#993399">1</span> report_ignored_msrs=<span style="color:#993399">0</span>
+<a name="line8"><span>08:</span></a>     options kvmfr static_size_mb=<span style="color:#993399">64</span> # Looking-glass
+<a name="line9"><span>09:</span></a>   '';
+<a name="line10"><span>10:</span></a>   boot.kernelParams = <span style="color:#990000">[</span>
+<a name="line11"><span>11:</span></a>     "i915.enable_psr=0"
+<a name="line12"><span>12:</span></a>     "intel_iommu=on" "iommu=pt"
+<a name="line13"><span>13:</span></a>   <span style="color:#990000">]</span>;
+<a name="line14"><span>14:</span></a> <span style="color:#990000">}</span>;</pre>

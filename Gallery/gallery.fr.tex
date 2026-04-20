@@ -1,0 +1,93 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfig}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{fancyhdr}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \newcommand{\multipleimages}[1]{#1}
+%END LATEX
+
+\title{\mousevox{
+  \gallerytitle{Mouse's Gallery}
+} {
+  \gallerytitle{Navi's Gallery}
+}}
+\author{
+  adjivas \\
+  <contact.blog@adjivas.eu> \\
+  Résumé www.mouse.paris/mouse
+  }{
+    \resumelink{https://www.adjivas.eu/navi}{www.adjivas.eu/navi}
+  } \\
+  Blog www.mouse.paris/mouse
+  }{
+    \bloglink{https://www.adjivas.eu/navi}{www.adjivas.eu/navi}
+  } \\
+  Contact www.mouse.paris/mouse
+  }{
+    \contactlink{https://www.adjivas.eu/navi}{www.adjivas.eu/navi}
+  }
+}
+\date{}
+
+\begin{document}
+\neobar{nav/navi.fr}
+\maketitle
+
+\thispagestyle{empty}
+\begin{gallerymain}
+\multipleimages{
+  \includetwoimages{landscape}{blender-cheesboard/cat-pawn}{Cat Pawn}{landscape}{blender-cheesboard/cat-tower}{Cat Tower}
+  battery-plomb/the-battery{La batterie à plomb}{portrait}{battery-plomb/myself}{Me}
+  }{}
+  nuclear-chest/nuclear{Caisse nucléaire}
+  }{}
+  \includetwoimages{landscape}{hot-swap-handle/withdisk}{With Disk}{landscape}{hot-swap-handle/withoutdisk}{Without Disk}
+  \includetwoimages{landscape}{ivl-75/ivl1-75}{ИВЛ1-7/5}{landscape}{ivl-75/ivl2-75}{ИВЛ2-7/5}
+  \includetwoimages{landscape}{rk-3214x/RK-3214X-stackable}{x2 RK-3214X}{landscape}{rk-3214x/RK-3214X}{x1 RK-3214X}
+  \includetwoimages{landscape}{motherboard-michel/PCB}{PCB}{landscape}{motherboard-michel/PCB-3D}{PCB-3D}
+  \includetwoimages{landscape}{open-dps/CAO}{CAO}{landscape}{open-dps/mounted}{Mounted}
+  \includeimage{landscape}{sopine-case/pine64-case}{Pine64 Case}
+  mouse-emblem/lineart{lineart of Mouse Emblem}
+  }{}
+  \includeimage{landscape}{gtx-780/silent-gpu}{Silent GTX-780}
+  \includeimage{portrait}{nixie-tester-case/the-tester}{The Tester}
+  % \includetwoimages{zelda-curtain-finial/mounted}{Mounted Curtain}{zelda-curtain-finial/finial}{Finial Zelda}
+  \includethreeimages{portrait}{nixie-case/42paris}{42Paris}{landscape}{nixie-case/mounting}{Mounting}{landscape}{nixie-case/pcb-control}{PCB Control}
+  \includethreeimages{portrait}{metal-keyboard/jlc3dp-keycaps}{Colis JLC3DP}{portrait}{metal-keyboard/ergodox-assembly}{Mounting Metal Keycaps}{portrait}{metal-keyboard/ergodox-assembled}{Full Metal Keycaps}
+  \includethreeimages{landscape}{paris-map/paris-qgis}{Paris with Qgis}{landscape}{paris-map/paris-qgis-random-colours}{Paris in Qgis with random colours}{landscape}{paris-map/paris-blender}{Paris in Blender}
+  \includeimage{landscape}{moving-in/front}{Lian Li Desk}
+}
+%  breadboard
+%  cheese-keyboard
+%  coffee
+
+% Galerie
+%  - MouseOS gif animation
+%  - batterie plomb + masque à gaz + oreilles souris
+%  - all my keyboards + numpad
+%  - one rare mirror Furry sous verre
+%  - Horloge Nixie Tube 42
+% Portfolio
+%  Art
+%    - [Krita, Blender] Luanti Model
+%    - [découpeuse laser] all Furry sous verre
+%  CAO
+%    - [impression 3d, decoupeuse laser,  électronique] Camera webcam + fan
+%    - [impression 3d] Zelda mirror
+%    - [impression 3d] Zelda lance rideau
+%    - [electronique laser] Breadboard
+%    - [impression 3d] Nixie Tube horloge
+%    - [impression 3d] Nixie Tube tester
+
+\end{gallerymain}
+\end{document}

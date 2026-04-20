@@ -1,0 +1,168 @@
+\RequirePackage{hevea}
+
+\renewenvironment{document}{
+  \@end{document}
+  \@atbegindocument
+    \@restartoutput\unskip
+    \@print{<!DOCTYPE html>}
+    \@print{<html lang="fr">}
+    \@print{<head><title>Gallery</title>}
+    \@print{<meta name="robots" content="none">}
+    \@print{<meta name="color-scheme" content="dark light"><!-- Thank's linkmauve for this suggestion -->}
+    \@print{<meta name="viewport" content="width=device-width, initial-scale=1">}
+    \@print{<link rel="icon" type="image/svg+xml" href="ressources/favicon.svg">}
+    \@meta
+  \fi
+  \@print{</head>}
+  \@print{<body>}
+}{
+  \@atenddocument
+%  \@footer
+  \@print{</body>}
+  \@print{</html>}
+  \@raise@enddocument
+}
+
+\newcounter{includeimagectr}
+
+\newcommand{\includeimage}[3]{
+  \refstepcounter{includeimagectr}%
+
+  \@print{<figure id="image-}%
+    \theincludeimagectr
+  \@print{" class="simpleimage }#1\@print{"><!-- https://orga.cat/blog/html-conditional-lazy-loading -->}%
+
+    \@print{<a href="#image-}%
+      \theincludeimagectr
+    \@print{">}
+      \@print{<img loading="lazy" src="ressources/}#2\@print{.webp" alt=""/>}
+    \@print{</a>}%
+
+    \@print{<figcaption>}%
+      \@print{<p>}#3\@print{</p>}
+    \@print{</figcaption>}
+  \@print{</figure>}%
+}
+
+\newcommand{\multipleimages}[1]{
+  \@print{<div class="multipleimages">}
+    #1
+  \@print{</div>}
+}
+\newcommand{\includethreeimages}[9]{
+  \includeimage{#1}{#2}{#3}
+  \includeimage{#4}{#5}{#6}
+  \includeimage{#7}{#8}{#9}
+}
+\newcommand{\includetwoimages}[6]{
+  \includeimage{#1}{#2}{#3}
+  \includeimage{#4}{#5}{#6}
+}
+
+\newstyle{html} {
+  scroll-behavior: smooth;
+}
+
+\newstyle{.simpleimage}{
+  margin: initial;
+}
+\newstyle{.simpleimage a}{
+  height: 100%;
+}
+
+\newstyle{.simpleimage img}{
+  width: 100\%;
+  height: 100\%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+\newstyle{.portrait :target}{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+\newstyle{.simpleimage:target a}{
+  display: block;
+  height: 100\%;
+}
+\newstyle{.simpleimage:target a img}{
+  max-height: 100\%;
+}
+
+\newstyle{.simpleimage p}{
+  margin: initial;
+  text-align: center;
+}
+
+\newstyle{[id^="image-"]:target}{
+  scroll-margin-top: 25vh;
+}
+
+\newstyle{@media (max-width: 500px)}{
+  .multipleimages \{
+    display: flex;
+    flex-direction: column;
+  \}
+}
+\newstyle{@media (min-width: 500px)}{
+  .multipleimages \{
+    display: grid;
+    margin: 0 auto;
+    column-gap: 20px;
+    row-gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 180px;
+    grid-auto-flow: row dense;
+  \}
+  [id^="image-"]:target img \{
+    object-fit: contain;
+  \}
+  .multipleimages:has(> :target) \{
+    grid-template-columns: initial;
+  \}
+}
+
+\newstyle{@media (min-width: 500px) and (max-width: 800px)}{
+  .portrait \{
+    grid-row: span 3;
+  \}
+  .landscape \{
+    grid-row: span 1;
+  \}
+  .portrait[id^="image-"]:target \{
+    grid-column: span 2;
+    grid-row: span 3;
+  \}
+  .landscape[id^="image-"]:target \{
+    grid-column: span 2;
+    grid-row: span 2;
+  \}
+}
+\newstyle{@media (min-width: 800px)}{
+  .portrait \{
+    grid-row: span 3;
+  \}
+  .landscape \{
+    grid-row: span 1;
+  \}
+  .portrait[id^="image-"]:target \{
+    grid-column: span 3;
+    grid-row: span 4;
+  \}
+  .landscape[id^="image-"]:target \{
+    grid-column: span 3;
+    grid-row: span 2;
+  \}
+}
+
+\input{web/util.hva}
+\input{web/body.hva}
+\input{web/nav.hva}
+\input{web/link.hva}
+\input{web/font.hva}
+\input{web/scheme.hva}
+\input{web/tag.hva}
+\input{web/avoid.hva}

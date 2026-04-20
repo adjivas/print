@@ -1,0 +1,161 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+%END LATEX
+
+\title{
+  \blogtitle{Du GPU Passthrough à la Nix pour du Windows}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article05.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Certains de mes amis, de jeunes poussins Linuxiens, m'ont murmuré à l'oreille qu'ils avaient parfois encore besoin de Windows, par exemple pour lancer certains logiciels d'électroniques comme Altium, d'infographie comme Clip Paint Studio avec tablette, ou encore certains jeux-vidéos. Ces programmes ne sont pas encore bien supportés par le projet \href{https://www.winehq.org}{Wine}. Ceci ont des recommended requirements qui nécessite un GPU et de bonnes performances.
+
+Certains en prenant leurs envols ont tenté du Dualboot Linux/Windows, cette solution est cependant fragile.
+Windows est réputé comme instable, ses mises à jour peuvent introduire des régressions, le dernier exemple en date est la mise à jour (2024, KB5041585) qui a perturbé le bon fonctionnement du multi-boot. \\
+\\
+La solution que je vais vous proposer est d'isoler windows dans une machine virtuelle, optimisé avec du GPU Passthrough pour du jeu ou des programmes lourds.
+\simpleimage{1.0}{benchmark/windows-techpowerup-heaven}{Windows en VM avec le \href{ressources/benchmark/Unigine_Heaven_Benchmark_4.0_20260107_1605.html}{benchmark Heaven} et les infos \href{ressources/benchmark/techpowerup.webp}{TechPowerUp/gpu-z}}
+
+\newpage
+Le terme Passthrough vient de la formation pass (passage) et through (à travers).
+Dans le domaine de la virtualisation, ce terme prend tout son sens lorsqu'il est associé à d'autres.
+Ces associations sont du CPU host-passthrough, du PCI Passthrough et ses dérivés tels que le GPU Passthrough ou toute autre fonction PCI.
+
+Le CPU host-passthrough est un mode de CPU virtualisé, c'est exposer à la machine virtuelle le modèle et les capacités du CPU hôte (voir \href{https://www.qemu.org/docs/master/system/qemu-cpu-models.html}{QEMU / KVM CPU model configuration}).
+C'est une des techniques utilisés pour :
+\begin{itemize}
+  \item Améliorer la performance en ayant ensemble d'instructions CPU plus complet.
+  \item Rassurer des anti-cheats trop stricts en ressemblant moins à une machine virtuelle d'un attaquant.
+\end{itemize}
+
+Le GPU passthrough, c'est attribuer un GPU à une machine virtuelle.
+C'est utilisé pour :
+\begin{itemize}
+  \item Des systèmes avec GPU en VM pour de la forte isolation entre utilisateurs partagent une même station de travail.
+  \item Des services sans contention avec le système hôte, par exemple du stable diffusions, des LLM
+  \item Du jeu lourd en VM, par exemple pour du gaming en cloud, ou dans notre cas d'aujourd'hui du gaming windows
+\end{itemize}
+
+C'est devenu documenté sous Linux à partir de 2015 avec l'article \href{https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF}{PCI passthrough via OVMF} du Wiki d'ArchLinux, l'article \href{https://wiki.nixos.org/wiki/PCI_passthrough}{PCI passthrough} du Wiki de NixOS le cite comme une référence.
+
+\section{GPU Passthrough à la Nix}
+Le scénario d'illustration que je vous propose est celui où notre système hôte aura un iGPU (le module graphique intégré du processeur) et notre système invité aura le GPU la carte graphique.
+% image illustration
+
+Nous aurons plusieurs étapes à réaliser, telles que configurer notre kernel Linux et son hyperviseur, configurer l'environnement de virtualisation LibVirt/QEMU, créer notre machine virtuelle et installer un système Windows.
+
+Avec Nix, ces étapes seront réalisées déclarativement plutôt qu'à la ligne de commande. Ce que je vais vous présenter sera donc rejouable le plus facilement possible.
+
+\newpage
+\subsection{Le kernel}
+Notre kernel devra activer IOMMU de nos CPUs, activer le module VFIO (Virtual Function I/O) et de lui déléguer notre ID PCI de notre GPU.
+
+L'IOMMU (input–output memory management unit) est un mécanisme matériel/une protection industrielle qui isole et contrôle les accès DMA\footnote{\href{https://fr.wikipedia.org/wiki/Acc\%C3\%A8s_direct_\%C3\%A0_la_m\%C3\%A9moire}{Direct Memory Access}} des fonctions PCI en leur attribuant des espaces d’adressage mémoire distincts.
+La VFIO (Virtual Function I/O) est l'infrastructure du noyau Linux qui expose en espace utilisateur un accès direct aux fonctions PCI, dans un environnement IOMMU protégé (voir \href{https://docs.kernel.org/driver-api/vfio.html}{The Linux Kernel/VFIO - “Virtual Function I/O”}).
+
+Identifier les functions PCI de notre GPU est trivial :
+\begin{lstlisting}
+lspci -nn
+00:02.0 Display controller [0380]: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor Integrated Graphics Controller [8086:0412] (rev 06)
+03:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Navi 31 [Radeon RX 7900 XT/7900 XTX/7900 GRE/7900M] [1002:744c] (rev ce)
+\end{lstlisting}
+
+Sous NixOS, nous pouvons configurer notre kernel pour du GPU Passthrough en suivant le Wiki, ou en utilisant le projet communautaire \href{https://github.com/j-brn/nixos-vfio}{nixos-vfio} qui simplifie la déclaration de la VFIO.
+
+\begin{multicols}{2}
+\includesnippet{virtualisation-vfio-nixos}{%
+  \texorpdfstring{\href{https://wiki.nixos.org/wiki/PCI_passthrough}{NixOS Wiki, PCI Passthrough}}{NixOS Wiki, PCI Passthrough}%
+}
+
+\columnbreak
+
+\includesnippet{virtualisation-vfio-j-brn}{\href{https://github.com/j-brn/nixos-vfio}{jbrn nixos-vfio, automate vfio setups}}
+\end{multicols}
+
+Le Wiki propose une solution très fine, le projet communautaire que je vous propose a une solution plus agnostique du matériel, c'est celle que j'ai préférée.
+
+J'ai placé cette configuration dans une \href{https://wiki.nixos.org/wiki/Specialisation}{Specialisation NixOS}, cela ajoute dans notre menu Grub une nouvelle entrée "vfio-passthrough", nous pourrons ainsi choisir de démarrer en GPU Passthrough ou non.
+
+\newpage
+\subsection{L'hyperviseur}
+L'hyperviseur intégré de Linux est KVM (Kernel-based Virtual Machine), QEMU fournit l’émulation matérielle et l’environnement d’exécution des machines virtuelles, libvirt ajoute une abstraction QEMU de plus haut niveau pour la définition et le lancement nos machines virtuelles.
+
+Sous NixOS, le Wiki \href{https://nixos.wiki/wiki/Libvirt}{Libvirt} nous propose de configurer libvirt et le logiciel libre QEMU comme suit :
+\includesnippet{virtualisation-virt}{Extrait virtualisation}
+
+Le projet communautaire \href{https://github.com/j-brn/nixos-vfio}{nixos-vfio} étend cette expressivité avec l'option "deviceACL", celle-ci permet de définir une liste blanche de devices Linux destiné aux machines virtuelles.
+\includesnippet{virtualisation-device-acl}{Extrait libvirtd deviceACL}
+
+\newpage
+\subsection{La machine virtuelle}
+L'expérience la plus habituelle est de créer une machine virtuelle avec une application graphique, par exemple virt-manager. Celle-ci crée un XML dont la définition est un domain LibVirt qui représente notre machine virtuelle. \\
+\\
+Mais nous sommes dans Nix ! Et dans Nix, tout n'est que déclaratif.
+
+Je vous propose donc le projet communautaire \href{https://github.com/AshleyYakeley/NixVirt}{AshleyYakeley, libvirt} qui nous permet de déclarer nos machines virtuelles, plus particulièrement en partant de template propre à des systèmes d'exploitations.
+
+\includesnippet{virtualisation-domains}{Définition d'une VM windows}
+
+\newpage
+Un template nous permet de définir les grandes options de notre machine virtuelle, nous aurons parfois besoin de le surcharger avec des éléments plus profonds.
+Dans notre cas, nous voulons entre autre ajouter notre GPU :
+
+\includesnippet{windows-hostdev-passthrough}{Extrait hostdev passthrough}
+
+Nous pouvons surcharger d'autres propriétés comme la topographie du processeur, les espaces disques, les inputs du groupe evdev ou encore celui de notre tablette graphique.
+
+\subsection{L'installation du Windows}
+J'ai souhaité automatiser l'installation, entre autre pour que ce soit le plus rejouable et facile possible.
+j'ai pour cela ajouté à ma déclaration de VM un CD virtuel contenant un \href{https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11}{Answer file (unattend.xml)}.
+Ce fichier contient toutes les réponses nécessaire à l'installation d'un Windows.
+J'ai généré le mien avec le projet \href{https://github.com/memstechtips/UnattendedWinstall}{UnattendedWinstall}, qui inclus des scripts de debloat/d'allégement de Windows.
+
+\newpage
+\section{Retour d'expérience}
+J'étais curieux de découvrir et tester le GPU Passthrough, je voulais explorer ce sujet de longue date pour progresser en virtualisation.
+
+J'utilise une carte graphique AMD récente qui a un reset-bug, c'est un bug matériel qui complique la réinitialisation de la carte. Cela implique qu'entre le redémarrage de la machine invité, la machine hôte devra être redémarré.
+Ma AMD Radeon RX 7900 est une carte grand public, elle n'est pas conçue pour du serveur/de la virtualisation.
+Je vous recommanderais plutôt à la place une récente Intel série Arc, celle-ci comprend une fonctionnalité SR-IOV qui permet même de partager son GPU entre plusieurs machines virtuelles.
+
+J'ai transmis mon code à  \href{https://gitlab.com/noodles-yaonam}{Kad} qui l'utilise pour réaliser ses dessins avec Clip Studio Paint.
+Je ne l'utilise pas personnellement, en fait je ne suis pas un utilisateur de Windows, je ne connaissais pratiquement rien à ce système avant de commencer ce projet et je ne me sens pas à l'aise avec cette entreprise.
+
+Je pense utiliser cette technique de virtualisation pour de futurs projets comme dédié un GPU à une MicroVM stable diffusion.
+
+% https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
+% https://xyinn.org/blog/freebsd/freebsd_bhyve_gpu_passthrough_amd
+\end{blogmain}
+\end{document}

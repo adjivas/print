@@ -1,0 +1,69 @@
+\newcommand{\resumetitle}[1]{#1}
+
+\newcommand{\neobar}[1]{
+  \@open{nav}{} \rawhtmlinput{ressources/#1.svg} \@close{nav}
+}
+
+\newcommand{\bloglink}[2]{\href{#1.html}{#2}}
+
+\newenvironment{resumemain}{
+  \@open{article}{}
+    \@open{header}{}
+      \usebox{\@title}
+    \@close{header}
+}{
+  \@close{article}
+}
+
+\newcommand{\resumeline}[1]{}
+
+\newcommand{\resumeprofile}[1]{
+  \imgsrc{images/profiles/#1.svg}
+}
+
+\newcommand{\resumename}[1]{
+  \@print{<div id="resumename">}#1\@print{</div>}
+}
+\newcommand{\resumefirstname}[1]{
+  \@print{<span id="resumefirstname">}#1\@print{</span>}
+}
+\newcommand{\resumelastname}[1]{
+  \@print{<span id="resumelastname">}#1\@print{</span>}
+}
+
+\newcommand{\resumecontact}[1]{
+  \@open{div}{id="resumecontact"}#1\@close{div}
+}
+
+\newcommand{\resumeblog}[1]{}
+
+\newstyle{header \#resumename}{
+  white-space: nowrap;
+}
+\newstyle{@media (max-width: 700px)}{
+  header svg \{
+    display: none;
+  \}
+  header .bullet \{
+    display: none;
+  \}
+  header \#resumename \{
+    white-space: wrap;
+  \}
+  header \#resumecontact \{
+    display: flex;
+    flex-direction: column;
+  \}
+}
+
+\renewcommand\textbullet{
+  \@open{span}{class=bullet}•\@close{span}
+}
+
+\newcommand\amper[1]{
+  \@print{<span class="amper">}\&\@print{</span>}
+}
+
+\newstyle{.amper}{
+  font-family: HoeflerTextItalic;
+}

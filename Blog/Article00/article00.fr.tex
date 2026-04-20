@@ -1,0 +1,132 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  % enumitem
+  \setlength{\itemsep}{0\baselineskip}
+  \setlength{\parsep}{0pt}
+%END LATEX
+
+\title{
+  \blogtitle{Du Café Façon Guinness}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article00.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+\begin{multicols}{2}
+  S'il y est un or noir, un carburant essentiel à tout dev, c'est le café.
+
+  Cette graine aux propriétés psychotropes est ce qui nous permet de nous donner au maximum.
+
+  Celle-ci est torréfiée depuis des siècles, probablement cinq tout au moins.
+
+  Les méthodes de préparations divergent, il en existe aujourd'hui plus d'une dizaine.
+
+  De quoi un dev a-t-il idéalement besoin ?
+  \begin{itemize}
+    \item d'un café prêt pour la semaine
+    \item qui puisse être rapidement servi à tout moment
+    \item qui soit sans sucre
+    \item qui est un goût agréable, doux
+  \end{itemize}
+
+  \mousevox{
+    Si nos critères n'étaient que cela, je conseillerais des pilules de café LP (à Libération Prolongée).
+
+    Ajoutons donc des critères de confort :
+    \begin{itemize}
+      \item qui est un goût agréable, doux
+      \item qui se rapproche d'un Irish-Coffee ou d'une Stout
+    \end{itemize}
+  }{}
+
+  La plus récente est le "café à l'azote infusé à froid", celle-ci aurait été expérimentée vers 2010.
+  Elle est l'évolution du café infusé à froid de Kyoto, et des progrès de l'industrie des boissons gazeuses.
+
+  La méthode d'extraction est donc d'infuser de la moulure de café, généralement de 12 à 24h, à température de 0 à 8°C, puis de le filtrer, par exemple avec un erlenmeyer comme une Chemex qui peut permettre de filtrer jusqu'à 10 par 10 tasses
+
+  \doubleimage{.6}{jar-monochrome}{Jar de moulure de café}{chemex-monochrome}{Chemex}
+
+  Le café filtré sera ensuite versé dans un fût, celui-ci sera pressurisé avec de l'azote à l'état gazeux.
+  Le café sera servi à la tireuse
+
+  \simpleimage{.5}{gaz-monochrome}{Fût + Adapter/Régulateur + Bouteille}
+
+  Son goût est crémeux, très comparable à celui d'une Guinness.
+  Je suis un amateur de Guinness, j'ai découvert que dans les années 50, cette société a été la première à commercialiser de la bière pressurisée à l'azote.
+  Un partenariat entre Guinness et Tiki Tonga Coffee nous permet aujourd'hui d'avoir du café aux arômes de Guinness.
+  J'ai tellement aimé cela que j'utilise aujourd'hui une tasse graduée pour limiter ma consommation...
+
+  % Café gradué
+
+  L'azote qui permet de servir pressions ces cafés est distribué en cartouches ou en bouteilles.
+  J'utilise personnellement une bouteille originellement destinée à de la Stout.
+
+  Les bouteilles ont l'avantage d'être plus économique.
+  Elles ont néanmoins des contraintes de stockages, à une température idéalement de 10°C à 30°C, strictement inférieur à 50°C, positionné verticalement, idéalement chaîné pour éviter qu'elle ne tombe.
+  Le niveau de danger est un celui d'un gaz sous pression, non inflammable et non toxique.
+
+  Lorsque j'ai commencé ce projet, j'étais ignorant de tout, je n'avais jamais moulu de café, j'ai reçu conseil d'un ami barman sur la bouteille d'azote, et d'autres sur la Chemex.
+  Celui-ci me semble accessible pour toute personne curieuse qui aime le café.
+\end{multicols}
+
+Voici l'inventaire du matériel que j'utilise :
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{|l|c|c|}
+    \hline \bf Description& \bf Fournisseur& \bf Réf-Fournisseur \\ \hline
+
+    Cafetière Chemex en verre 10 tasses &
+    \href{https://www.maxicoffee.com/chemex-m-197.html}{MaxiCoffee, Chemex} &
+    \href{https://www.maxicoffee.com/cafetiere-chemex-verre-tasses-p-30943.html}{30943} \\
+
+    Système mini fût 2L &
+    \href{https://ikegger.eu/fr}{iKegger} &
+    \href{https://ikegger.eu/fr/products/ikegger-2-0-complete-kickstarter-packages}{ich-zapfe} \\
+
+    Adaptateur/Régulateur à double jauge &
+    \href{https://ikegger.eu/fr}{iKegger} &
+    \href{https://ikegger.eu/fr/products/nitrogen-bottle-adaptor-for-m3-dual-gauge-multi-gas-regulator}{adaptor-for-m3} \\
+
+    Bouteille de gaz Azote (N2), 2L &
+    \href{https://www.tireusesabiere.fr}{Tireuse à bière} &
+    \href{https://www.tireusesabiere.fr/bouteille-d-azote-2-l-n2-avec-porte-bouteille/a-452064}{443527} \\
+
+    (bonus) Siphon à Chantilly &
+    \href{https://www.maxicoffee.com/siphon-isi-m-13.html}{MaxiCoffee, iSi} &
+    \href{https://www.maxicoffee.com/siphon-chantilly-cream-profi-whip-inox-brosse-p-1333.html}{1333} \\
+
+    \hline
+  \end{tabular}
+\end{table}
+
+J'y ajoute en bonus de la crème Chantilly ou fouettée
+
+Un projet suivant, sûrement bien plus facile, pourrait être de remplir des bouteilles d'eau gazeuses ou de soda avec du Co2.
+\end{blogmain}
+\end{document}

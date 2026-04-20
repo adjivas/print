@@ -1,0 +1,30 @@
+\newstyle{:root}{
+  margin: inherit;
+  overflow-x: hidden;
+  font-family: "LatinModern";
+  font-size: x-large;
+}
+\newstyle{article, .footnoterule, .thefootnotes}{
+  line-height: 1.6;
+  margin: auto;
+  padding-left: 5\%;
+  padding-right: 5\%;
+  max-width: 1200px;
+}
+
+\newstyle{p}{
+  text-align: justify;
+  hyphens: auto;
+}
+
+\newstyle{h2:first-child}{
+  margin-top: inherit;
+}
+
+\newstyle{h4}{
+  font-size: xx-large;
+  margin-bottom: initial;
+  color: cyan;
+  font-weight: bold;
+  border-bottom: 3px double gray;
+}

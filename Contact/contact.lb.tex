@@ -1,0 +1,48 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{fancyhdr}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+%END LATEX
+
+% me la .xairul. badydi'u
+% Hyrule Castle
+\title{\vspace{-50pt}\mousevox{
+  \profilesvg{mouse} \Huge{
+    % Le journal de la souris éclair
+    % smacu: x1 is a mouse of species x2
+    % ckemono: x1 is an anthropomorphic animal of type/species x2
+    % snukarni: k1 is a [shared journal]/blog about topic/subject k2 published/administered by k3 for participants/audience k4.
+    % zgavevu: x1 is visible electricity (lightning, electric arcing, etc.) produced by x2
+    % te lo zgavevu ckemono smacu ku snukarni
+    % te "souris éclair" snukarni
+
+    % lidysmacu: light mouse
+    me la lidysmacu pe le snukarni
+  }
+} {
+  \profilesvg{navi} \Huge{
+    % Navi's Blog
+    % snukarni: k1 is a [shared journal]/blog about topic/subject k2 published/administered by k3 for participants/audience k4.
+    me la .navi. pe le snukarni
+  }
+}}
+\author{
+  % Navi
+  la .navi.
+}
+\date{2024}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\end{document}

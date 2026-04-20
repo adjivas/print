@@ -1,0 +1,270 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>001:</span></a> <span style="color:#990000">{</span> lib<span style="color:#990000">,</span> nixvirt<span style="color:#990000">,</span> pkgs<span style="color:#990000">,</span> config<span style="color:#990000">,</span> ... <span style="color:#990000">}</span>: <span style="color:#990000">{</span>
+<a name="line2"><span>002:</span></a>   options = <span style="color:#990000">{</span>
+<a name="line3"><span>003:</span></a>     windows.enable = lib.mkEnableOption "enable virtualisation";
+<a name="line4"><span>004:</span></a>     windows.windowsInstall = lib.mkOption <span style="color:#990000">{</span>
+<a name="line5"><span>005:</span></a>       type = lib.types.nullOr lib.types.path;
+<a name="line6"><span>006:</span></a>       description = "Path to the Windows ISO file";
+<a name="line7"><span>007:</span></a>       default = pkgs.fetchurl <span style="color:#990000">{</span>
+<a name="line8"><span>008:</span></a>         url = "https://archive.org/download/windows11_20220930/Win11_22H2_English_x64v1.iso";
+<a name="line9"><span>009:</span></a>         sha256 = "sha256-DfLxc9hNAHQ9wI7YJPvRdNlykpvYS4f+OE7ZUPW9qyI=";
+<a name="line10"><span>010:</span></a>         name = "Win11_22H2_English_x64v1.iso";
+<a name="line11"><span>011:</span></a>       <span style="color:#990000">}</span>;
+<a name="line12"><span>012:</span></a>     <span style="color:#990000">}</span>;
+<a name="line13"><span>013:</span></a> 
+<a name="line14"><span>014:</span></a>     windows.unattendedWinstall = lib.mkOption <span style="color:#990000">{</span>
+<a name="line15"><span>015:</span></a>       type = lib.types.path;
+<a name="line16"><span>016:</span></a>       readOnly = <b><span style="color:#0000FF">true</span></b>;
+<a name="line17"><span>017:</span></a>       description = "unattend.iso result";
+<a name="line18"><span>018:</span></a>       default = pkgs.runCommand "unattend-iso" <span style="color:#990000">{</span> <span style="color:#990000">}</span> ''
+<a name="line19"><span>019:</span></a>         mkdir -p "$out/iso"
+<a name="line20"><span>020:</span></a>         cp $<span style="color:#990000">{</span>./autounattend.xml<span style="color:#990000">}</span> autounattend.xml
+<a name="line21"><span>021:</span></a>         $<span style="color:#990000">{</span>pkgs.cdrkit<span style="color:#990000">}</span>/bin/genisoimage -Jr -o $out/iso/unattendName.iso autounattend.xml
+<a name="line22"><span>022:</span></a>       '';
+<a name="line23"><span>023:</span></a>     <span style="color:#990000">}</span>;
+<a name="line24"><span>024:</span></a>   <span style="color:#990000">}</span>;
+<a name="line25"><span>025:</span></a>   config = lib.mkIf config.windows.enable <span style="color:#990000">{</span>
+<a name="line26"><span>026:</span></a>     system.activationScripts.copyNvramWindows.text = ''
+<a name="line27"><span>027:</span></a>       dst="/var/lib/libvirt/qemu/nvram/windows_VARS.fd"
+<a name="line28"><span>028:</span></a>       <span style="color:#990000">[</span> -e "$dst" <span style="color:#990000">]</span> || <span style="color:#990000">{</span>
+<a name="line29"><span>029:</span></a>         mkdir -p "$(dirname "$dst")"
+<a name="line30"><span>030:</span></a>         cp "${pkgs.OVMFFull.fd}/FV/OVMF_VARS.ms.fd" "$dst"
+<a name="line31"><span>031:</span></a>         chown qemu-libvirtd:kvm "$dst"
+<a name="line32"><span>032:</span></a>         chmod <span style="color:#993399">660</span> "$dst"
+<a name="line33"><span>033:</span></a>       <span style="color:#990000">}</span>
+<a name="line34"><span>034:</span></a>     '';
+<a name="line35"><span>035:</span></a> 
+<a name="line36"><span>036:</span></a>     virtualisation.machines = lib.mkAfter <span style="color:#990000">[</span>
+<a name="line37"><span>037:</span></a>       <span style="color:#990000">{</span>
+<a name="line38"><span>038:</span></a>         definition = let base = nixvirt.lib.domain.templates.windows (<span style="color:#990000">{</span>
+<a name="line39"><span>039:</span></a>           name = "windows";
+<a name="line40"><span>040:</span></a>           uuid = "def734bb-e2ca-44ee-80f5-0ea0f2593aaa";
+<a name="line41"><span>041:</span></a>           memory = <span style="color:#990000">{</span> count = <span style="color:#993399">24</span>; unit = "GiB"; <span style="color:#990000">}</span>;
+<a name="line42"><span>042:</span></a>           install_virtio = <b><span style="color:#0000FF">true</span></b>;
+<a name="line43"><span>043:</span></a>           nvram_path = "/var/lib/libvirt/qemu/nvram/windows_VARS.fd";
+<a name="line44"><span>044:</span></a>           virtio_net = <b><span style="color:#0000FF">true</span></b>;
+<a name="line45"><span>045:</span></a>           virtio_drive = <b><span style="color:#0000FF">true</span></b>;
+<a name="line46"><span>046:</span></a>           networks = <span style="color:#990000">[</span>
+<a name="line47"><span>047:</span></a>             (nixvirt.lib.mkBridgeNetwork <span style="color:#990000">{</span>
+<a name="line48"><span>048:</span></a>               bridge = "br-inf";
+<a name="line49"><span>049:</span></a>               mac = "ba:e0:37:d0:62:71";
+<a name="line50"><span>050:</span></a>             <span style="color:#990000">}</span>)
+<a name="line51"><span>051:</span></a>           <span style="color:#990000">]</span>;
+<a name="line52"><span>052:</span></a> 
+<a name="line53"><span>053:</span></a>           bridge_name = "virbr0";
+<a name="line54"><span>054:</span></a>           no_graphics = <b><span style="color:#0000FF">false</span></b>;
+<a name="line55"><span>055:</span></a>         <span style="color:#990000">}</span>); in nixvirt.lib.domain.writeXML (lib.recursiveUpdate base <span style="color:#990000">{</span>
+<a name="line56"><span>056:</span></a>           vcpu = <span style="color:#990000">{</span>
+<a name="line57"><span>057:</span></a>             placement = "static";
+<a name="line58"><span>058:</span></a>             count = <span style="color:#993399">3</span>;
+<a name="line59"><span>059:</span></a>           <span style="color:#990000">}</span>;
+<a name="line60"><span>060:</span></a>           cpu = <span style="color:#990000">{</span>
+<a name="line61"><span>061:</span></a>             mode = "host-passthrough";
+<a name="line62"><span>062:</span></a>             check = "full";
+<a name="line63"><span>063:</span></a>             migratable = <b><span style="color:#0000FF">true</span></b>;
+<a name="line64"><span>064:</span></a>             topology = <span style="color:#990000">{</span>
+<a name="line65"><span>065:</span></a>               sockets = <span style="color:#993399">1</span>;
+<a name="line66"><span>066:</span></a>               dies = <span style="color:#993399">1</span>;
+<a name="line67"><span>067:</span></a>               cores = <span style="color:#993399">3</span>;
+<a name="line68"><span>068:</span></a>               threads = <span style="color:#993399">1</span>;
+<a name="line69"><span>069:</span></a>             <span style="color:#990000">}</span>;
+<a name="line70"><span>070:</span></a>             feature = <span style="color:#990000">{</span>
+<a name="line71"><span>071:</span></a>               policy = "require";
+<a name="line72"><span>072:</span></a>               name = "topoext";
+<a name="line73"><span>073:</span></a>             <span style="color:#990000">}</span>;
+<a name="line74"><span>074:</span></a>           <span style="color:#990000">}</span>;
+<a name="line75"><span>075:</span></a>           iothreads = <span style="color:#990000">{</span> count = <span style="color:#993399">1</span>; <span style="color:#990000">}</span>;
+<a name="line76"><span>076:</span></a>           cputune = <span style="color:#990000">{</span>
+<a name="line77"><span>077:</span></a>             emulatorpin = <span style="color:#990000">{</span> cpuset = "0"; <span style="color:#990000">}</span>;
+<a name="line78"><span>078:</span></a>             iothreadpin = <span style="color:#990000">{</span> iothread = <span style="color:#993399">1</span>; cpuset = "0"; <span style="color:#990000">}</span>;
+<a name="line79"><span>079:</span></a>             vcpupin = <span style="color:#990000">[</span>
+<a name="line80"><span>080:</span></a>               <span style="color:#990000">{</span> vcpu = <span style="color:#993399">0</span>; cpuset = "0"; <span style="color:#990000">}</span>
+<a name="line81"><span>081:</span></a>               <span style="color:#990000">{</span> vcpu = <span style="color:#993399">1</span>; cpuset = "1"; <span style="color:#990000">}</span>
+<a name="line82"><span>082:</span></a>               <span style="color:#990000">{</span> vcpu = <span style="color:#993399">2</span>; cpuset = "2"; <span style="color:#990000">}</span>
+<a name="line83"><span>083:</span></a>             <span style="color:#990000">]</span>;
+<a name="line84"><span>084:</span></a>           <span style="color:#990000">}</span>;
+<a name="line85"><span>085:</span></a>           devices = <span style="color:#990000">{</span>
+<a name="line86"><span>086:</span></a>             watchdog = <span style="color:#990000">{</span> model = "itco"; action = "reset"; <span style="color:#990000">}</span>;
+<a name="line87"><span>087:</span></a>             memballoon.model = "none";
+<a name="line88"><span>088:</span></a>             channel = <span style="color:#990000">[</span>
+<a name="line89"><span>089:</span></a>               <span style="color:#990000">{</span>
+<a name="line90"><span>090:</span></a>                 type = "spicevmc";
+<a name="line91"><span>091:</span></a>                 target = <span style="color:#990000">{</span> type = "virtio"; name = "com.redhat.spice.0"; <span style="color:#990000">}</span>;
+<a name="line92"><span>092:</span></a>               <span style="color:#990000">}</span>
+<a name="line93"><span>093:</span></a>             <span style="color:#990000">]</span>;
+<a name="line94"><span>094:</span></a>             graphics = <span style="color:#990000">{</span>
+<a name="line95"><span>095:</span></a>               type = "spice";
+<a name="line96"><span>096:</span></a>               autoport = <b><span style="color:#0000FF">true</span></b>;
+<a name="line97"><span>097:</span></a>               listen = <span style="color:#990000">{</span> type = "address"; <span style="color:#990000">}</span>;
+<a name="line98"><span>098:</span></a>               image = <span style="color:#990000">{</span> compression = <b><span style="color:#0000FF">false</span></b>; <span style="color:#990000">}</span>;
+<a name="line99"><span>099:</span></a>             <span style="color:#990000">}</span>;
+<a name="line100"><span>100:</span></a>             video = <span style="color:#990000">{</span>
+<a name="line101"><span>101:</span></a>               model = <span style="color:#990000">{</span>
+<a name="line102"><span>102:</span></a>                 type = "vga";
+<a name="line103"><span>103:</span></a>                 vram = <span style="color:#993399">65536</span>;
+<a name="line104"><span>104:</span></a>                 heads  = <span style="color:#993399">1</span>;
+<a name="line105"><span>105:</span></a>                 primary = <b><span style="color:#0000FF">true</span></b>;
+<a name="line106"><span>106:</span></a>               <span style="color:#990000">}</span>;
+<a name="line107"><span>107:</span></a>             <span style="color:#990000">}</span>;
+<a name="line108"><span>108:</span></a>             input = <span style="color:#990000">[</span>
+<a name="line109"><span>109:</span></a>               <span style="color:#990000">{</span> # ErgoDox EZ ErgoDox EZ
+<a name="line110"><span>110:</span></a>                 type = "evdev";
+<a name="line111"><span>111:</span></a>                 source = <span style="color:#990000">{</span>
+<a name="line112"><span>112:</span></a>                   dev = "/dev/input/by-id/usb-ErgoDox_EZ_ErgoDox_EZ_0-event-kbd";
+<a name="line113"><span>113:</span></a>                   grab = "all";
+<a name="line114"><span>114:</span></a>                   grabToggle = "ctrl-ctrl";
+<a name="line115"><span>115:</span></a>                   repeat = <b><span style="color:#0000FF">true</span></b>;
+<a name="line116"><span>116:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line117"><span>117:</span></a>               <span style="color:#990000">}</span>
+<a name="line118"><span>118:</span></a>               <span style="color:#990000">{</span> # Apple<span style="color:#990000">,</span> Inc. Magic Trackpad <span style="color:#993399">2</span>
+<a name="line119"><span>119:</span></a>                 type = "evdev";
+<a name="line120"><span>120:</span></a>                 source = <span style="color:#990000">{</span>
+<a name="line121"><span>121:</span></a>                   dev = "/dev/input/by-id/usb-Apple_Inc._Magic_Trackpad_2_CC2929200Z7J5R9AM-if01-event-mouse";
+<a name="line122"><span>122:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line123"><span>123:</span></a>               <span style="color:#990000">}</span>
+<a name="line124"><span>124:</span></a>             <span style="color:#990000">]</span>;
+<a name="line125"><span>125:</span></a>             console = <span style="color:#990000">{</span>
+<a name="line126"><span>126:</span></a>               type = "pty";
+<a name="line127"><span>127:</span></a>               target = <span style="color:#990000">{</span>
+<a name="line128"><span>128:</span></a>                 type = "virtio";
+<a name="line129"><span>129:</span></a>                 port = <span style="color:#993399">0</span>;
+<a name="line130"><span>130:</span></a>               <span style="color:#990000">}</span>;
+<a name="line131"><span>131:</span></a>             <span style="color:#990000">}</span>;
+<a name="line132"><span>132:</span></a>             disk = <span style="color:#990000">[</span>
+<a name="line133"><span>133:</span></a>               <span style="color:#990000">{</span>
+<a name="line134"><span>134:</span></a>                 type = "file";
+<a name="line135"><span>135:</span></a>                 device = "cdrom";
+<a name="line136"><span>136:</span></a>                 driver = <span style="color:#990000">{</span>
+<a name="line137"><span>137:</span></a>                   name = "qemu";
+<a name="line138"><span>138:</span></a>                   type = "raw";
+<a name="line139"><span>139:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line140"><span>140:</span></a>                 source.file = config.windows.windowsInstall;
+<a name="line141"><span>141:</span></a>                 target = <span style="color:#990000">{</span>
+<a name="line142"><span>142:</span></a>                   dev = "sda";
+<a name="line143"><span>143:</span></a>                   bus = "sata";
+<a name="line144"><span>144:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line145"><span>145:</span></a>                 address = <span style="color:#990000">{</span>
+<a name="line146"><span>146:</span></a>                   type = "drive";
+<a name="line147"><span>147:</span></a>                   controller = <span style="color:#993399">1</span>;
+<a name="line148"><span>148:</span></a>                   bus = <span style="color:#993399">0</span>;
+<a name="line149"><span>149:</span></a>                   target = <span style="color:#993399">0</span>;
+<a name="line150"><span>150:</span></a>                   unit = <span style="color:#993399">0</span>;
+<a name="line151"><span>151:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line152"><span>152:</span></a>               <span style="color:#990000">}</span>
+<a name="line153"><span>153:</span></a>               <span style="color:#990000">{</span>
+<a name="line154"><span>154:</span></a>                 type = "file";
+<a name="line155"><span>155:</span></a>                 device = "cdrom";
+<a name="line156"><span>156:</span></a>                 driver = <span style="color:#990000">{</span>
+<a name="line157"><span>157:</span></a>                   name = "qemu";
+<a name="line158"><span>158:</span></a>                   type = "raw";
+<a name="line159"><span>159:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line160"><span>160:</span></a>                 source.file = "${config.windows.unattendedWinstall}/iso/unattendName.iso";
+<a name="line161"><span>161:</span></a>                 target = <span style="color:#990000">{</span>
+<a name="line162"><span>162:</span></a>                   dev = "sdb";
+<a name="line163"><span>163:</span></a>                   bus = "sata";
+<a name="line164"><span>164:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line165"><span>165:</span></a>                 address = <span style="color:#990000">{</span>
+<a name="line166"><span>166:</span></a>                   type = "drive";
+<a name="line167"><span>167:</span></a>                   controller = <span style="color:#993399">1</span>;
+<a name="line168"><span>168:</span></a>                   bus = <span style="color:#993399">0</span>;
+<a name="line169"><span>169:</span></a>                   target = <span style="color:#993399">0</span>;
+<a name="line170"><span>170:</span></a>                   unit = <span style="color:#993399">1</span>;
+<a name="line171"><span>171:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line172"><span>172:</span></a>               <span style="color:#990000">}</span>
+<a name="line173"><span>173:</span></a>               <span style="color:#990000">{</span>
+<a name="line174"><span>174:</span></a>                 type = "block";
+<a name="line175"><span>175:</span></a>                 device = "disk";
+<a name="line176"><span>176:</span></a>                 source.dev = "/dev/disk/by-id/ata-Samsung_SSD_870_QVO_2TB_S5RPNJ0X904225Y";
+<a name="line177"><span>177:</span></a>                 driver = <span style="color:#990000">{</span>
+<a name="line178"><span>178:</span></a>                   name = "qemu";
+<a name="line179"><span>179:</span></a>                   type = "raw";
+<a name="line180"><span>180:</span></a>                   cache = "none";
+<a name="line181"><span>181:</span></a>                   io = "native";
+<a name="line182"><span>182:</span></a>                   discard = "unmap";
+<a name="line183"><span>183:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line184"><span>184:</span></a>                 target = <span style="color:#990000">{</span>
+<a name="line185"><span>185:</span></a>                   dev = "sdd";
+<a name="line186"><span>186:</span></a>                   bus = "sata";
+<a name="line187"><span>187:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line188"><span>188:</span></a>                 serial = "WIN-S5RPNJ0X904225Y";
+<a name="line189"><span>189:</span></a>                 address = <span style="color:#990000">{</span>
+<a name="line190"><span>190:</span></a>                   type = "drive";
+<a name="line191"><span>191:</span></a>                   controller = <span style="color:#993399">0</span>;
+<a name="line192"><span>192:</span></a>                   bus = <span style="color:#993399">0</span>;
+<a name="line193"><span>193:</span></a>                   target = <span style="color:#993399">0</span>;
+<a name="line194"><span>194:</span></a>                   unit = <span style="color:#993399">0</span>;
+<a name="line195"><span>195:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line196"><span>196:</span></a>               <span style="color:#990000">}</span>
+<a name="line197"><span>197:</span></a>             <span style="color:#990000">]</span>;
+<a name="line198"><span>198:</span></a>             hostdev = <span style="color:#990000">[</span>
+<a name="line199"><span>199:</span></a>               <span style="color:#990000">{</span>
+<a name="line200"><span>200:</span></a>                 mode = "subsystem";
+<a name="line201"><span>201:</span></a>                 type = "pci";
+<a name="line202"><span>202:</span></a>                 managed = <b><span style="color:#0000FF">true</span></b>;
+<a name="line203"><span>203:</span></a>                 source = <span style="color:#990000">{</span>
+<a name="line204"><span>204:</span></a>                   address = <span style="color:#990000">{</span>
+<a name="line205"><span>205:</span></a>                     domain = <span style="color:#993399">0</span>;
+<a name="line206"><span>206:</span></a>                     bus = <span style="color:#993399">3</span>;
+<a name="line207"><span>207:</span></a>                     slot = <span style="color:#993399">0</span>;
+<a name="line208"><span>208:</span></a>                     function = <span style="color:#993399">0</span>;
+<a name="line209"><span>209:</span></a>                     multifunction = <b><span style="color:#0000FF">true</span></b>;
+<a name="line210"><span>210:</span></a>                   <span style="color:#990000">}</span>;
+<a name="line211"><span>211:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line212"><span>212:</span></a>               <span style="color:#990000">}</span>
+<a name="line213"><span>213:</span></a>               <span style="color:#990000">{</span>
+<a name="line214"><span>214:</span></a>                 mode = "subsystem";
+<a name="line215"><span>215:</span></a>                 type = "pci";
+<a name="line216"><span>216:</span></a>                 managed = <b><span style="color:#0000FF">true</span></b>;
+<a name="line217"><span>217:</span></a>                 source = <span style="color:#990000">{</span>
+<a name="line218"><span>218:</span></a>                   address = <span style="color:#990000">{</span>
+<a name="line219"><span>219:</span></a>                     domain = <span style="color:#993399">0</span>;
+<a name="line220"><span>220:</span></a>                     bus = <span style="color:#993399">3</span>;
+<a name="line221"><span>221:</span></a>                     slot = <span style="color:#993399">0</span>;
+<a name="line222"><span>222:</span></a>                     function = <span style="color:#993399">1</span>;
+<a name="line223"><span>223:</span></a>                   <span style="color:#990000">}</span>;
+<a name="line224"><span>224:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line225"><span>225:</span></a>               <span style="color:#990000">}</span>
+<a name="line226"><span>226:</span></a>               <span style="color:#990000">{</span> # Wacom Co.<span style="color:#990000">,</span> Ltd PTH-<span style="color:#993399">660</span> <span style="color:#990000">[</span>Intuos Pro (M)<span style="color:#990000">]</span>
+<a name="line227"><span>227:</span></a>                 mode = "subsystem";
+<a name="line228"><span>228:</span></a>                 type = "usb";
+<a name="line229"><span>229:</span></a>                 managed = <b><span style="color:#0000FF">true</span></b>;
+<a name="line230"><span>230:</span></a>                 source = <span style="color:#990000">{</span>
+<a name="line231"><span>231:</span></a>                   startupPolicy = "optional";
+<a name="line232"><span>232:</span></a>                   vendor.id = <span style="color:#993399">1386</span>;
+<a name="line233"><span>233:</span></a>                   product.id = <span style="color:#993399">855</span>;
+<a name="line234"><span>234:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line235"><span>235:</span></a>               <span style="color:#990000">}</span>
+<a name="line236"><span>236:</span></a>             <span style="color:#990000">]</span>;
+<a name="line237"><span>237:</span></a>           <span style="color:#990000">}</span>;
+<a name="line238"><span>238:</span></a>           qemu-override = <span style="color:#990000">{</span>
+<a name="line239"><span>239:</span></a>             device = <span style="color:#990000">{</span>
+<a name="line240"><span>240:</span></a>               alias = "hostdev0";
+<a name="line241"><span>241:</span></a>               frontend = <span style="color:#990000">{</span>
+<a name="line242"><span>242:</span></a>                 property = <span style="color:#990000">{</span>
+<a name="line243"><span>243:</span></a>                   name = "x-vga";
+<a name="line244"><span>244:</span></a>                   type = "bool";
+<a name="line245"><span>245:</span></a>                   value = "true";
+<a name="line246"><span>246:</span></a>                 <span style="color:#990000">}</span>;
+<a name="line247"><span>247:</span></a>               <span style="color:#990000">}</span>;
+<a name="line248"><span>248:</span></a>             <span style="color:#990000">}</span>;
+<a name="line249"><span>249:</span></a>           <span style="color:#990000">}</span>;
+<a name="line250"><span>250:</span></a>           qemu-commandline = <span style="color:#990000">{</span>
+<a name="line251"><span>251:</span></a>             arg = <span style="color:#990000">[</span>
+<a name="line252"><span>252:</span></a>               # Audio
+<a name="line253"><span>253:</span></a>               <span style="color:#990000">{</span>value = "-device";<span style="color:#990000">}</span>
+<a name="line254"><span>254:</span></a>               <span style="color:#990000">{</span>value = "{\"driver\":\"ich9-intel-hda\"}";<span style="color:#990000">}</span>
+<a name="line255"><span>255:</span></a>               # <span style="color:#990000">{</span>value = "-device";<span style="color:#990000">}</span>
+<a name="line256"><span>256:</span></a>               # <span style="color:#990000">{</span>value = "{\"driver\":\"hda-micro\",\"audiodev\":\"hda\"}";<span style="color:#990000">}</span>
+<a name="line257"><span>257:</span></a>               <span style="color:#990000">{</span>value = "-audiodev";<span style="color:#990000">}</span>
+<a name="line258"><span>258:</span></a>               <span style="color:#990000">{</span>value = "{\"driver\":\"pa\",\"id\":\"hda\",\"server\":\"unix:/run/user/<span style="color:#993399">1000</span>/pulse/native\"}";<span style="color:#990000">}</span>
+<a name="line259"><span>259:</span></a>               # Lookingglass
+<a name="line260"><span>260:</span></a>               <span style="color:#990000">{</span>value = "-device";<span style="color:#990000">}</span>
+<a name="line261"><span>261:</span></a>               <span style="color:#990000">{</span>value = "{\"driver\":\"ivshmem-plain\",\"id\":\"shmem0\",\"memdev\":\"looking-glass\"}";<span style="color:#990000">}</span>
+<a name="line262"><span>262:</span></a>               <span style="color:#990000">{</span>value = "-object";<span style="color:#990000">}</span>
+<a name="line263"><span>263:</span></a>               <span style="color:#990000">{</span>value = "{\"qom-type\":\"memory-backend-file\",\"id\":\"looking-glass\",\"mem-path\":\"/dev/kvmfr0\",\"size\":67108864,\"share\":true}";<span style="color:#990000">}</span>
+<a name="line264"><span>264:</span></a>             <span style="color:#990000">]</span>;
+<a name="line265"><span>265:</span></a>           <span style="color:#990000">}</span>;
+<a name="line266"><span>266:</span></a>         <span style="color:#990000">}</span>);
+<a name="line267"><span>267:</span></a>       <span style="color:#990000">}</span>
+<a name="line268"><span>268:</span></a>     <span style="color:#990000">]</span>;
+<a name="line269"><span>269:</span></a>   <span style="color:#990000">}</span>;
+<a name="line270"><span>270:</span></a> <span style="color:#990000">}</span></pre>

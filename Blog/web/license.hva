@@ -1,0 +1,16 @@
+\newcommand{\blogfooter}[0]{
+  \@open{footer}{}
+    \@open{span}{class="line"}
+    \@close{span}
+    Cette page Web a été générée à l'aide d'\href{http://hevea.inria.fr}{\hevea{}}. \\
+    Ses sources \LaTeX{}
+    }{
+      \href{https://github.com/adjivas/print}{sources \LaTeX{}}
+    } sont distribuées sous licence \href{https://www.latex-project.org/lppl}{LPPL 1.3c}. \\
+    Son contenu est publié sous licence \href{https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{CC BY-NC-SA 4.0}.
+  \@close{footer}
+}
+
+\newstyle{body > footer}{
+  text-align: center;
+}

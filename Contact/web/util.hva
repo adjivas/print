@@ -1,0 +1,18 @@
+\newcommand{\contactitle}[1]{#1}
+
+\newcommand{\neobar}[1]{
+  \@open{nav}{} \rawhtmlinput{ressources/#1.svg} \@close{nav}
+}
+
+\newcommand{\publicpgp}[2]{\href{ressources/#1.html}{#2}}
+
+\newenvironment{contactmain}{
+  \@open{article}{}
+    \@open{header}{}
+      \@open{h2}{} \usebox{\@title} \@close{h2}
+    \@close{header}
+}{
+  \@close{article}
+}
+
+\newcommand{\enquote}[1]{“#1”}

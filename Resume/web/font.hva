@@ -1,0 +1,51 @@
+\newcommand{\hoeflertextengraved}{\@span{class="hoeflertextengraved"}}
+\newcommand{\hoeflertextengravedtwo}{\@span{class="hoeflertextengraved2"}}
+\newcommand{\hoeflertextregular}{\@span{class="hoeflertextregular"}}
+
+\newstyle{@media all}{
+  @font-face \{
+    font-family: "LatinModern";
+    font-style: normal;
+    src: url("ressources/fonts/web/LM-regular.woff2");
+  \}
+  @font-face \{
+    font-family: "RetroMgmDisplay";
+    font-style: normal;
+    src: url("ressources/fonts/web/Metro-Goldwyn-Mayer.woff2");
+  \}
+  @font-face \{
+    font-family: "BrushScriptRegular";
+    font-style: normal;
+    src: url("ressources/fonts/web/BrushScriptRegular.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextRegular";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-Regular.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextEngraved";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-Engraved.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextBlack";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-Black.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextItalic";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-Italic.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextEngraved2";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-Engraved-2.woff2");
+  \}
+  @font-face \{
+    font-family: "HoeflerTextBlackItalic";
+    font-style: normal;
+    src: url("ressources/fonts/web/HoeflerText-BlackItalic.woff2");
+  \}
+}

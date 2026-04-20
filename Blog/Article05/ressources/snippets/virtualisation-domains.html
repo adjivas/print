@@ -1,0 +1,30 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> virtualisation.libvirt.connections."qemu:///system".domains = <span style="color:#990000">[</span>
+<a name="line2"><span>02:</span></a>   <span style="color:#990000">{</span>
+<a name="line3"><span>03:</span></a>     domains = <span style="color:#990000">[{</span>
+<a name="line4"><span>04:</span></a>       definition = let base = nixvirt.lib.domain.templates.windows (<span style="color:#990000">{</span>
+<a name="line5"><span>05:</span></a>         name = "windows";
+<a name="line6"><span>06:</span></a>         uuid = "def734bb-e2ca-44ee-80f5-0ea0f2523aaa";
+<a name="line7"><span>07:</span></a>         memory = <span style="color:#990000">{</span> count = <span style="color:#993399">8</span>; unit = "GiB"; <span style="color:#990000">}</span>;
+<a name="line8"><span>08:</span></a>         storage_vol = <span style="color:#990000">{</span> pool = "default"; volume = "windows.qcow2"; <span style="color:#990000">}</span>;
+<a name="line9"><span>09:</span></a>         install_vol = "\${config.windows.iso}";
+<a name="line10"><span>10:</span></a>         install_virtio = <b><span style="color:#0000FF">true</span></b>;
+<a name="line11"><span>11:</span></a>         nvram_path = "/var/lib/libvirt/qemu/nvram/windows_VARS.fd";
+<a name="line12"><span>12:</span></a>         no_graphics = <b><span style="color:#0000FF">false</span></b>;
+<a name="line13"><span>13:</span></a> 
+<a name="line14"><span>14:</span></a>         networks = <span style="color:#990000">[</span>
+<a name="line15"><span>15:</span></a>           (nixvirt.lib.mkBridgeNetwork <span style="color:#990000">{</span>
+<a name="line16"><span>16:</span></a>             bridge = "br-inf";
+<a name="line17"><span>17:</span></a>             mac = "ba:e0:37:d0:62:42";
+<a name="line18"><span>18:</span></a>           <span style="color:#990000">}</span>)
+<a name="line19"><span>19:</span></a>         <span style="color:#990000">]</span>;
+<a name="line20"><span>20:</span></a> 
+<a name="line21"><span>21:</span></a>         bridge_name = "br0";
+<a name="line22"><span>22:</span></a> 
+<a name="line23"><span>23:</span></a>         virtio_net = <b><span style="color:#0000FF">true</span></b>;
+<a name="line24"><span>24:</span></a>         virtio_drive = <b><span style="color:#0000FF">true</span></b>;
+<a name="line25"><span>25:</span></a>       <span style="color:#990000">}</span>); in nixvirt.lib.domain.writeXML (lib.recursiveUpdate base <span style="color:#990000">{</span>
+<a name="line26"><span>26:</span></a>         # nos surcharges du template
+<a name="line27"><span>27:</span></a>       <span style="color:#990000">}</span>);
+<a name="line28"><span>28:</span></a>     <span style="color:#990000">}]</span>
+<a name="line29"><span>29:</span></a>   <span style="color:#990000">}</span>
+<a name="line30"><span>30:</span></a> <span style="color:#990000">]</span>;</pre>

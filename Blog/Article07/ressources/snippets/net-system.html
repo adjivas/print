@@ -1,0 +1,23 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> # pixiecore boot "${build.kernel}/bzImage" "${build.netbootRamdisk}/initrd" --cmdline "init=${build.toplevel}/init" ...
+<a name="line2"><span>02:</span></a> build = (nixpkgs.lib.nixosSystem <span style="color:#990000">{</span>
+<a name="line3"><span>03:</span></a>   system = "x86_64-linux";
+<a name="line4"><span>04:</span></a>   specialArgs = <span style="color:#990000">{</span>
+<a name="line5"><span>05:</span></a>     inherit inputs self;
+<a name="line6"><span>06:</span></a>     secretsSystem = inputs.secrets;
+<a name="line7"><span>07:</span></a>     secretsUser = inputs.secretsHomeAdjivas;
+<a name="line8"><span>08:</span></a>   <span style="color:#990000">}</span>;
+<a name="line9"><span>09:</span></a>   modules = <span style="color:#990000">[</span>
+<a name="line10"><span>10:</span></a>     (modulesPath + "/installer/netboot/netboot-minimal.nix")
+<a name="line11"><span>11:</span></a>     (self + /hosts/dreaminstall/configuration.nix)
+<a name="line12"><span>12:</span></a>     (<span style="color:#990000">{</span> ... <span style="color:#990000">}</span>: <span style="color:#990000">{</span>
+<a name="line13"><span>13:</span></a>       boot.postBootCommands = ''
+<a name="line14"><span>14:</span></a>         if <span style="color:#990000">[[</span> " $(&lt;/proc/cmdline) " =~ \ RED_IDENT=(<span style="color:#990000">[</span>^<span style="color:#990000">[</span>:space:<span style="color:#990000">]]</span>+) <span style="color:#990000">]]</span>; then
+<a name="line15"><span>15:</span></a>           ident="''${BASH_REMATCH[1]}"
+<a name="line16"><span>16:</span></a> 
+<a name="line17"><span>17:</span></a>           $<span style="color:#990000">{</span>pkgs.coreutils<span style="color:#990000">}</span>/bin/printf '%s' "$ident" &gt; /etc/ident-red.txt
+<a name="line18"><span>18:</span></a>         fi
+<a name="line19"><span>19:</span></a>       '';
+<a name="line20"><span>20:</span></a>     <span style="color:#990000">}</span>)
+<a name="line21"><span>21:</span></a>   <span style="color:#990000">]</span>;
+<a name="line22"><span>22:</span></a> <span style="color:#990000">}</span>).config.system.build;
+<a name="line23"><span>23:</span></a> </pre>
