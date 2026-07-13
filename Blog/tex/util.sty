@@ -1,0 +1,16 @@
+\RequirePackage{xstring}
+
+\newenvironment{blogmain}{}{}
+
+\newcommand{\neobar}[2]{}
+
+\newcommand{\bloglink}[2]{\href{#1.pdf}{#2}}
+
+\newcommand{\blogtitle}[1]{
+  \vspace{-50pt}%
+  \mousevox{
+    \profilesvg{mouse}
+  } {
+    \profilesvg{navi}
+  } \gothic{\Huge{#1}}
+}

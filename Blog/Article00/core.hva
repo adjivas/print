@@ -1,0 +1,35 @@
+\RequirePackage{hevea}
+
+\renewenvironment{document}{
+  \@end{document}
+  \@atbegindocument
+    \@restartoutput\unskip
+    \@print{<!DOCTYPE html>}
+    \@print{<html lang="fr">}
+    \@print{<head><title>article00</title>}
+    \@print{<meta name="robots" content="none">}
+    \@print{<meta name="color-scheme" content="dark light"><!-- Thank's linkmauve for this suggestion -->}
+    \@print{<link rel="alternate" type="application/atom+xml" href="ressources/feed.atom">}
+    \@print{<meta name="viewport" content="width=device-width, initial-scale=1">}
+    \@print{<link rel="icon" type="image/svg+xml" href="ressources/favicon.svg">}
+    \@meta
+  \fi
+  \@print{</head>}
+  \@print{<body>}
+  \usebox{\@toplinks}
+}{
+  \@print{</body>}
+  \@print{</html>}
+  \@raise@enddocument
+}
+
+\input{web/util.hva}
+\input{web/body.hva}
+\input{web/nav.hva}
+\input{web/media.hva}
+\input{web/link.hva}
+\input{web/font.hva}
+\input{web/scheme.hva}
+\input{web/table.hva}
+\input{web/avoid.hva}
+\input{web/license.hva}

@@ -1,0 +1,10 @@
+\renewcommand{\maketitle}{}
+\renewcommand{\vspace}[1]{}
+
+\newcommand{\multicols}[2]{#2}
+\newcommand{\lstset}[1]{#1}
+\newcommand{\arraybackslash}[0]{}
+
+\newstyle{footer:not(:has(> *))}{
+  display: none;
+}

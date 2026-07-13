@@ -1,0 +1,29 @@
+\RequirePackage{xstring}
+\RequirePackage{accsupp}
+
+\newenvironment{contactmain}{}{}
+
+\newcommand{\neobar}[2]{}
+
+\newcommand{\contactitle}[1]{
+  \vspace{-50pt}%
+  \mousevox{
+    \profilesvg{mouse}
+  } {
+    \profilesvg{navi}
+  } \gothic{\Huge{#1}}
+}
+
+\newcommand{\contactqr}[1]{%
+  {%
+    \qrfontlthree
+    \fontsize{75}{90}\selectfont
+    \BeginAccSupp{%
+      method=escape,%
+      space,%
+      ActualText={#1}%
+    }%
+    [#1]%
+    \EndAccSupp{}%
+  }
+}

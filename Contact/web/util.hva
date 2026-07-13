@@ -1,0 +1,36 @@
+\newcommand{\contactitle}[1]{#1}
+
+\newcommand{\neobar}[2]{
+  \@open{nav}{}
+    \@open{aside}{}
+      \@open{a}{tabindex="-1" title="Flux Atom (abonnement aux mises à jour du site)" href=ressources/feed.atom}ATOM\@close{a}
+      \@open{a}{tabindex="-1" title="Fichier PDF (format de diffusion universel)" href=#1.pdf}PDF\@close{a}
+    \@close{aside}
+    \rawhtmlinput{ressources/#2.svg}
+  \@close{nav}
+}
+
+\newcommand{\publicpgp}[2]{\href{ressources/#1.html}{#2}}
+
+\newenvironment{contactmain}{
+  \@open{article}{}
+    \@open{header}{}
+      \@open{h2}{} \usebox{\@title} \@close{h2}
+    \@close{header}
+}{
+  \@close{article}
+}
+
+\newcommand{\contactqr}[1]{
+  \@print{<code id="contactqr">}[#1]\@print{</code>}
+}
+\newstyle{\#contactqr}{
+  line-height: initial;
+  font-family: "QRfont3L";
+  font-size: 220px;
+  min-height: 220px;
+  display: block;
+  user-select: all;
+}
+
+\newcommand{\enquote}[1]{“#1”}

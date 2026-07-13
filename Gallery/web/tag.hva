@@ -1,0 +1,11 @@
+\newstyle{span}{
+  white-space: pre;
+}
+
+\newstyle{span.tag}{
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 25px;
+  border-width: 1px;
+  border-style: solid;
+}

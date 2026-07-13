@@ -1,0 +1,193 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{csquotes}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+\newcommand{\includetri}[1]{
+  #1 - \href{ressources/#1.html}{WebView}\textperiodcentered
+  \href{ressources/#1.FCStd}{FreeCAD}\textperiodcentered
+  \href{ressources/#1.stp}{STEP}
+}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \lstset{breaklines=true}
+%END LATEX
+
+\title{
+  \blogtitle{Des claviers métals}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article02.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Nous aurons besoin de claviers pour encore longtemps, alors autant mieux s'en servir. Je vais vous présenter deux projets de claviers qui vous proposeront quelques idées.
+Lorsque j’étais étudiant, je voulais découvrir la soudure, et utiliser un clavier mécanique qui m’accompagnerait et m’aiderait à suivre de bonnes pratiques.
+L'un de mes amis (\href{https://www.youtube.com/@GodOfMacro}{God of Macro}) m'avait créé cette curiosité avec \href{https://www.youtube.com/watch?v=7qXSbcSMR0E}{sa suite de vidéos}.
+
+Cet intérêt, je l'ai partagé avec d'autres.
+Au début des années 2010, avec l'apparition des plateformes de financement participatif et d'achats groupés, des communautés de passionnés ont pu soutenir une nouvelle génération de projets de claviers ergonomiques et programmables.
+
+\section{Ergodox}
+Mon choix fût de partir sur l'\href{https://geekhack.org/index.php?topic=39107.0}{Ergodox}, c'est avec celui-ci que je vous écris mes articles de blog et que je programme.
+
+\simpleimage{1.0}{photo-ergodox}{Ergodox (PCB-2012-08-02)}
+% TODO: considérer une vue en 3/4
+
+\newpage
+
+Ses nouveautés sont :
+\begin{itemize}
+  \item L'Ortholinear - soit d'être composé de rangées de touches alignées : Historiquement, les machines à écrire avaient des contraintes mécaniques qui ont impliqué de décaler les touches. La nouvelle génération de claviers ergonomiques rompt donc avec cet usage archaïque.
+  \item Le Split - soit d'être séparé en deux moitiés pour améliorer le confort, et placer son café ou sa souris/tablette/son joystick au milieu.
+  \item Le Blank - soit de n'avoir aucune sérigraphie sur les touches, elles ne sont pas nécessaires.
+\end{itemize}
+
+Mais ce ne sont pas ses seules qualités appréciables, celles-ci sont :
+\begin{itemize}
+  \item L'\href{https://github.com/Ergodox-io/ErgoDox}{Open-Hardware} - c'est-à-dire que ses schémas de PCB sont disponibles en ligne, ça m'avait été utile pour réparer mon Ergodox lorsque celui-ci avait eu une panne de son connecteur USB.
+  \item L'\href{https://github.com/qmk/qmk_firmware/blob/master/keyboards/ergodox_ez/readme.md}{Open-Source} - celui-ci est membre du projet \href{https://qmk.fm}{QMK Firmware}, il est donc programmable/flashable, cela m’a été utile pour adapter son code source et personnaliser nativement son agencement de touches.
+\end{itemize}
+
+\newpage
+
+\subsection{Disposition de touches}
+Mon choix fût de partir sur une base Qwerty, et de lui ajouter certaines des spécificités de la langue française.
+J'ai priorisé l'aspect universel plutôt que l'aspect dactylographique.
+
+\vspace{-80mm}
+\simpleschemas{1.0}{ergodox}{base Qwerty + variante simplifiée du layout \href{https://qwerty-lafayette.org}{lafayette}}
+
+L'informatique n'est linguistiquement pas neutre, sa langue est l'anglais américain.
+La disposition omniprésente est le Qwerty américain de 1867, celle-ci a été réfléchie pour éviter les blocages mécaniques des machines à écrire tout en proposant un placement cohérent des touches pour la saisie anglaise. 
+L'ergonomie/les raccourcis de nos programmes se sont adaptés à cette disposition, c'est par exemple le cas pour l'éditeur de texte Vim, l'outil de 3D Blender.
+Cette disposition n'est cependant pas compétitive pour écrire rapidement en anglais, elle n'est pas non plus adapté aux langues internationals.
+Des alternatives plus dactylographique lui ont donc été imaginés, parmis celles-ci :
+\begin{itemize}
+  \item Le Dvorak de 1936 - qui est optimisé pour la saisie anglaise, celui-ci a une base théorique qui a été publié dans le livre \href{https://archive.org/details/in.ernet.dli.2015.74878}{Typewriting Behavior: Psychology Applied to Teaching and Learning Typewriting}.
+  \item Le Bépo du début des années 2000 - qui est optimisé pour la saisie française. Celui-ci est une adaptation du Dvorak, il s'agit des mêmes communautés.
+\end{itemize}
+
+Ces alternatives sont plus optimales pour des dactylographes.
+Des études suggèrent néanmoins qu'elles seraient encore sub-optimales, par exemple l'étude (\href{https://pmc.ncbi.nlm.nih.gov/articles/PMC6946161/}{2019, Application of a genetic algorithm to the keyboard layout problem}) propose un algorithme génétique pour déduire des dispositions de touches nouvelles qui seraient plus idéales selon des critères de fréquence de paires de lettres, de position des touches. 
+
+\newpage
+
+\begin{multicols}{2}
+\raggedcolumns
+
+\subsection{Les switchs}
+Pour des programmeurs, un choix commun est du switch tactile, à la moitié de l'insertion d'une touche, cela ajoute un bump/une résistance qui nous permet de sentir que nous l'avons activé.
+
+\simpleimage{.7}{switch}{Switch}
+
+J'avais passé une après-midi calme à apprendre à souder, et à souder chacun de ses switches, puis une semaine à apprendre à l'utiliser efficacement.
+
+De nos jours, il n'est plus nécessaire de souder pour assembler son clavier.
+Les PCB des claviers incluent des hotswap sockets qui nous permettent d'insérer nos switches, et de les remplacer par d'autres si nous avons changé d'avis sur le type de switch.
+
+\simpleimage{.7}{hotswap}{Hotswap Sockets bottom et top}
+
+\columnbreak
+
+\subsection{Les touches}
+Ses touches d'origine sont en PBT (Polytéréphtalate de butylène), c'est plutôt rugueux au toucher, elles sont résistantes aux UV et très durables. D'autres kits de claviers les proposent en ABS (Acrylonitrile Butadiène Styrène), c'est une alternative plus bon marché, lisse au toucher, ça jaunit sous les UV.
+Mon objectif étant l'hygiène, j'ai choisi de les remplacer par des touches en BJ-316L (un acier inoxydable/une variante du 316L désigné pour la bijouterie) plus facile à nettoyer, c'est lisse et très lourd, ça se réchauffe lors de l'utilisation.
+Je n'ai cependant pas de fournisseur à vous proposer, j'ai modélisé les miennes avec FreeCAD et j'ai demandé à \href{https://jlc3dp.com}{JLC3DP} de me les usiner via de l'impression 3D métal :
+\begin{itemize}
+  \item \includetri{XDA-1u}
+  \item \includetri{XDA-1.5u}
+  \item \includetri{XDA-2u}
+\end{itemize}
+
+Je les ai polies au \href{https://www.cite-sciences.fr/fr/au-programme/lieux-ressources/carrefour-numerique2/fab-lab}{Carrefour numérique²} de la Cité des Sciences dont je remercie ses membres d'avoir été endurants avec le bruit causé par mon travail.
+Si j'avais à nouveau cette tâche, j'utiliserais un tonneau polisseur, cela pourrait même rendre possible un effet miroir.
+
+\simpleimage{.7}{photo-keycaps}{touches-2U métal avec polissage artisanal}
+
+\end{multicols}
+
+\newpage
+
+\section{Swiss \enquote{Cheeseboard}}
+J'avais besoin d'un clavier d'invité, qui soit adapté à du gaming et de la programmation, avec quelques notions d'ergonomies.
+
+J'ai choisi le \href{https://geekhack.org/index.php?topic=108522.0}{Swiss}, un clavier fromage !
+
+Sa particularité est qu'il est a 60\% de la taille d'un clavier commun, ce qui permet de moins déplacement ses mains.
+
+Son montage m'a demandé d'installer en plus des stabilisateurs pour les touches espace, shiftleft et enter.
+Les stabilisateurs de touches sont des pièces mécaniques essentielles pour pouvoir enfoncer des touches larges sans qu'elles ne basculent d'un côté ou de l'autre.
+
+% TODO: revoir le découpage + la qualité d'image
+\simpleimage{1.0}{photo-swiss-cheeseboard}{Swiss Cheeseboard v1}
+
+Celui-ci est partiellement open-hardware et \href{https://github.com/qmk/qmk_firmware/blob/master/keyboards/ergodox_ez/readme.md}{open-source}. J'ai adapté son code source pour reprendre les mêmes choix que pour la disposition de touches de mon ErgoDox, j'ai ajouté un second layer L1 pour intégrer les touches des flèches directionnelles, de fonctions et d'effacement avant.
+\simpleschemas{1.0}{swiss-cheeseboard}{base Qwerty + layer Vim et gaming + variante simplifiée du layout \href{https://qwerty-lafayette.org}{lafayette}}
+
+\newpage
+
+Ce que j'aime avec ce clavier est qu'il est un magnifique exemple de ce qu'il est possible de réaliser avec un bloc de métal et une CNC 5 axes.
+
+\simplevideo{.4}{swiss-news}{\href{https://discord.com/channels/751805666737258536/751808647683637310/1133711599409041458}{Extrait} du channel \href{https://discord.com/channels/751805666737258536/751808647683637310}{swiss-news} du discord \href{https://discord.gg/vquRzB5X}{Bergoli MK}}
+
+\section{Retour d'expérience}
+Je vous recommande l'aventure du \href{https://fr.wikipedia.org/wiki/Do_it_yourself}{faites-le vous-même}, assembler ses propres claviers est amusant et instructif, c'est comprendre ce que nous avons sous nos doigts de magiciens du code. Ça peut toucher à des notions mécaniques propres aux switches jusqu'aux stabilisateurs des touches longues, à de la programmation embarquée comme flasher sa propre variante du firmware constructeur.
+
+Le projet \href{https://qmk.fm}{QMK Firmware} de claviers Open-Source Atmel a \href{https://browse.qmk.fm}{une très large liste} de choix.
+
+De futurs projets pourraient être la fabrication d'un MiniDox (une variante mini de l'Ergodox) comme clavier nomade de voyage/de travail en présentiel.
+
+\section{Le Futur après les claviers}
+Les claviers sont l’aboutissement d’une longue évolution, améliorée par des communautés de passionnés jusqu'à leur forme la plus aboutie.
+
+Mais de la même manière que nous ne devons pas avoir d'attachement pour le code, nous ne devons pas non plus avoir d'attachement pour nos outils.
+
+L'état de l'art de la conversion de l'activité cérébrale en texte évolue.
+Cela peut plus particulièrement reposer sur l'outil de prothèse neurale ECoG (Électrocorticographie).
+
+Cela comprend la prononciation silencieuse et l'écoute du discours interne.
+
+La prononciation silencieuse c'est décoder des subvocalisations/des intensions d'articulations.
+
+De récentes études ont révélés que c'était possible en temps réel :
+\begin{itemize}
+  \item L'étude (\href{https://www.nature.com/articles/s41467-022-33611-3}{2022, Generalizable spelling using a speech neuroprosthesis in an individual with severe limb and vocal paralysis}) a eu des hautes performances de 29 WPM, pour un lexique limité à 9000 mots avec un taux d'erreur de 6,13\%.
+  \item L'étude (\href{https://www.nature.com/articles/s41586-023-06443-4}{2023, A high-performance neuroprosthesis for speech decoding and avatar control}) a atteint 78 WPM pour un lexique limité à 1024 mots avec un taux d'erreur de 25\%.
+\end{itemize}
+
+Des modèles de langage pourront être utilisés pour diminuer le taux d'erreur.
+
+Plus expérimentalement cela comprend l'écoute du discours interne, c'est-à-dire des paroles que nous imaginons sans intensions de les prononcer.
+L'étude (\href{https://www.nature.com/articles/s42003-024-06518-6}{2024, Imagined speech event detection from electrocorticography and its transfer between speech modes and subjects}) a distingué les signaux de la parole silencieuse et de la parole imaginé.
+Ce qui est aujourd'hui possible est d'écouter des mots imaginés sur des lexiques très réduits, par exemple l'étude (\href{https://www.nature.com/articles/s41562-024-01867-y}{2024, Representation of internal speech by single neurons in human supramarginal gyrus}) présente un modèle qui déduit parmi 8 mots proposés lequel est imaginé par le participant, le taux de réussite le plus haut a été enregistré à 72\%.
+\end{blogmain}
+\end{document}

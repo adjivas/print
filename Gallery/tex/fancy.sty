@@ -1,0 +1,27 @@
+\RequirePackage{fancyhdr}
+\RequirePackage{hyperref}
+\RequirePackage{tikz}
+
+\newcommand*\circled[1]{
+  \tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=2pt,line width=1.5pt] (char) {#1};
+  }
+}
+
+\fancypagestyle{first}{%
+  \fancyhf{}
+  \fancyhead[C]{\raisebox{-3pt}{\hypersetup{extension=}\href{./blog.fr.pdf}{
+    \Large\brushscriptregular{Navi’s Blog}}
+  }}
+  \fancyfoot[C]{\hrulefill\quad\raisebox{-3pt}{\scriptsize\circled{\gothic{\thepage}}}\quad\hrulefill}
+  \renewcommand{\headrulewidth}{0pt}
+}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[C]{\hrulefill\quad\raisebox{-3pt}{\hypersetup{extension=}\href{./blog.fr.pdf}{
+    \Large\brushscriptregular{Navi’s Blog}}
+  }\quad\hrulefill}
+  \fancyfoot[C]{\hrulefill\quad\raisebox{-3pt}{\scriptsize\circled{\gothic{\thepage}}}\quad\hrulefill}
+  \renewcommand{\headrulewidth}{0pt}
+}
+\pagestyle{plain}

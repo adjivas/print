@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Contact</title>
+  <subtitle>Navi’s Contact</subtitle>
+  <link href="https://www.adjivas.eu/navi/feed.atom" rel="self"/>
+  <link href="https://www.adjivas.eu/mouse"/>
+  <updated>2026-03-26T02:31:04.00Z</updated>
+  <id>Contact</id>
+  <author>
+    <name>Navi</name>
+    <email>contact@adjivas.eu</email>
+  </author></feed>

@@ -1,0 +1,27 @@
+\RequirePackage{listings}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single
+}
+
+\lstdefinelanguage{Nix}{
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  keywords={let,in,with,if,then,else,rec,inherit,assert,or,true,false,null},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{brown},
+  showstringspaces=false
+}
+
+\newcommand{\includesnippet}[2]{
+  \lstinputlisting[
+    language=Nix,
+    numbers=left,
+    caption={#2}
+  ]{ressources/snippets/#1.nix}
+}

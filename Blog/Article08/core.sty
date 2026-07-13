@@ -1,0 +1,20 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{hearticle}[2013/01/13 Custom Package]
+
+\input{tex/util.sty}
+\input{tex/font.sty}
+\input{tex/fancy.sty}
+\input{tex/profile.sty}
+\input{tex/media.sty}
+\input{tex/license.sty}
+
+% Media
+\renewcommand{\simpleimage}[3]{
+  \caption{#3}
+  \includegraphics[width=#1\textwidth]{#2}
+}
+
+% Schema
+\definecolor{color_29791}{rgb}{0,0,0}
+
+\endinput

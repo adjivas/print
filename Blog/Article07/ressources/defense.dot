@@ -1,0 +1,95 @@
+digraph G_defense {
+  rankdir = LR;
+  compound = true;
+  nodesep = 0;
+  ranksep = 1;
+  splines = ortho;
+
+  node [shape = plaintext, height=0, width=4];
+  subgraph cluster_layer1 {
+    label = "layer 1: agebox, git secret";
+    subgraph cluster_layer1_user_secrets {
+      label = "home/adjivas/.secrets/age";
+      layer1_user_secret_more [label = "⋮"];
+      layer1_contact [label = "contacts.vcf.age.agebox"];
+    }
+    subgraph cluster_layer1_user_passage {
+      label = "home/adjivas/.config/passage/store";
+      layer1_user_passage_more [label = "⋮"];
+      layer1_linuxfr [label = "linuxfr.org/adjivas.age.agebox"];
+      layer1_hackaday [label = "hackaday.com/adjivas.age.agebox"];
+    }
+    subgraph cluster_layer1_system {
+      label = "secrets/age";
+      layer1_system_more [label = "⋮"];
+      layer1_rootpassword [label = "root-password.age.agebox"];
+      layer1_adjivaspassword [label = "adjivas-password.age.agebox"];
+      layer1_freeboxadjivas [label = "Freebox-adjivas.nmconnection.age.agebox"];
+      layer1_lebunny [label = "Lebunny.nmconnection.age.agebox"];
+    }
+  }
+
+  subgraph cluster_layer2 {
+    label = "layer 2: agenix, /nix/persistent/";
+    subgraph cluster_layer2_user_secrets {
+      label = "/home/adjivas/.secrets/age";
+      layer2_user_secret_more [label = "⋮"];
+      layer2_contact [label = "contacts.vcf.age"];
+    }
+    subgraph cluster_layer2_user_passage {
+      label = "/home/adjivas/.config/passage/store";
+      layer2_user_passage_more [label = "⋮"];
+      layer2_linuxfr [label = "linuxfr.org/adjivas.age"];
+      layer2_hackaday [label = "hackaday.com/adjivas.age"];
+    }
+    subgraph cluster_layer2_system {
+      label = "secrets/age";
+      layer2_system_more [label = "⋮"];
+      layer2_rootpassword [label = "root-password.age"];
+      layer2_adjivaspassword [label = "adjivas-password.age"];
+      layer2_freeboxadjivas [label = "Freebox-adjivas.nmconnection.age"];
+      layer2_lebunny [label = "Lebunny.nmconnection.age"];
+    }
+  }
+
+  subgraph cluster_layer3 {
+    label = "boot: /etc/⋯, /home/⋯, ⋯";
+    color = none;
+    subgraph cluster_layer3_user_secrets {
+      label = "/home/adjivas/.agenix";
+      color = black;
+      layer3_user_secret_more [label = "⋮"];
+      layer3_contact [label = "contacts.vcf"];
+    }
+    subgraph cluster_layer3_user_passage {
+      label = "/home/adjivas/.config/passage/store";
+      color = black;
+      layer3_user_passage_more [label = "⋮"];
+      layer3_linuxfr [label = "linuxfr.org/adjivas.age"];
+      layer3_hackaday [label = "hackaday.com/adjivas.age"];
+    }
+    subgraph cluster_layer3_system {
+      label = "/etc ➝ /run/agenix";
+      color = black;
+      layer3_system_more [label = "⋮"];
+      layer3_shadow [label = "/etc/shadow"];
+      layer3_systemconnections [label = "/etc/NetworkManager/system-connections"];
+    }
+  }
+
+  # layer1_rootpassword -> layer2_rootpassword[style="dashed", ltail=cluster_layer1_system, lhead=cluster_layer2_system];
+  # layer1_adjivaspassword -> layer2_adjivaspassword[style="dashed", ltail=cluster_layer1_system, lhead=cluster_layer2_system];
+  layer1_freeboxadjivas -> layer2_freeboxadjivas[style="dashed", ltail=cluster_layer1_system, lhead=cluster_layer2_system];
+  # layer1_lebunny -> layer2_lebunny[style="dashed", ltail=cluster_layer1_system, lhead=cluster_layer2_system];
+  layer1_contact -> layer2_contact[style="dashed", ltail=cluster_layer1_user_secrets, lhead=cluster_layer2_user_secrets];
+  # layer1_linuxfr -> layer2_linuxfr[style="dashed", ltail=cluster_layer1_user_passage, lhead=cluster_layer2_user_passage];
+  layer1_hackaday -> layer2_hackaday[style="dashed", ltail=cluster_layer1_user_passage, lhead=cluster_layer2_user_passage];
+  
+  # layer2_rootpassword -> layer3_shadow[style="dashed", ltail=cluster_layer2_system, lhead=cluster_layer3_system];
+  # layer2_adjivaspassword -> layer3_shadow[style="dashed", ltail=cluster_layer2_system, lhead=cluster_layer3_system];
+  layer2_freeboxadjivas -> layer3_systemconnections[style="dashed", ltail=cluster_layer2_system, lhead=cluster_layer3_system];
+  # layer2_lebunny -> layer3_systemconnections[style="dashed", ltail=cluster_layer2_system, lhead=cluster_layer3_system];
+  layer2_contact -> layer3_contact[style="dashed", ltail=cluster_layer2_user_secrets, lhead=cluster_layer3_user_secrets];
+  # layer2_linuxfr -> layer3_linuxfr[style="dashed", ltail=cluster_layer2_user_passage, lhead=cluster_layer3_user_passage];
+  layer2_hackaday -> layer3_hackaday[style="dashed", ltail=cluster_layer2_user_passage, lhead=cluster_layer3_user_passage];
+}

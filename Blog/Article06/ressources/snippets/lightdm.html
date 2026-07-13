@@ -1,0 +1,15 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> services.xserver.displayManager.lightdm = <span style="color:#990000">{</span>
+<a name="line2"><span>02:</span></a>   extraConfig = lib.mkForce ''
+<a name="line3"><span>03:</span></a>     <span style="color:#990000">[</span>Seat:*<span style="color:#990000">]</span>
+<a name="line4"><span>04:</span></a>     greeter-session=lightdm-gtk-greeter
+<a name="line5"><span>05:</span></a>     user-session=sway
+<a name="line6"><span>06:</span></a> 
+<a name="line7"><span>07:</span></a>     <span style="color:#990000">[</span>Seat:seat0<span style="color:#990000">]</span>
+<a name="line8"><span>08:</span></a>     autologin-user=adjivas
+<a name="line9"><span>09:</span></a>     autologin-session=sway
+<a name="line10"><span>10:</span></a> 
+<a name="line11"><span>11:</span></a>     <span style="color:#990000">[</span>Seat:seat1<span style="color:#990000">]</span>
+<a name="line12"><span>12:</span></a>     autologin-user=kad
+<a name="line13"><span>13:</span></a>     autologin-session=sway
+<a name="line14"><span>14:</span></a>   '';
+<a name="line15"><span>15:</span></a> <span style="color:#990000">}</span>;</pre>

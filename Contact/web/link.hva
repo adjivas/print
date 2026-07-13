@@ -1,0 +1,27 @@
+\newcommand{\captionof}[2]{
+  \@open{aside}{class="captionof"}
+  #2
+  \@close{aside}
+}
+
+\newstyle{.captionof}{
+  text-align: center;
+}
+
+\newstyle{a}{
+  text-decoration: none;
+}
+\newstyle{a:hover}{
+  text-decoration: underline;
+}
+
+\newstyle{.simplecode a:hover}{
+  text-decoration: none !important;
+}
+
+\newstyle{a[href^="\#note"]}{
+  text-shadow: none;
+}
+\newstyle{a[href^="\#note"]::before}{
+  content: "Note ";
+}

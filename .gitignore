@@ -1,0 +1,17 @@
+public/
+*/public/
+
+.clj-kondo/
+.lsp/
+
+*.webp~
+*.jpg~
+
+fp-info-cache
+*-backups/
+*.bak
+*.kicad_sch.lck
+
+*-autosave.kra
+*.blend1
+*.FCBak

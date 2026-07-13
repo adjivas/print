@@ -1,0 +1,17 @@
+\newstyle{@media all}{
+  @font-face \{
+    font-family: "LatinModern";
+    font-style: normal;
+    src: url("ressources/fonts/web/LM-regular.woff2");
+  \}
+  @font-face \{
+    font-family: "RetroMgmDisplay";
+    font-style: normal;
+    src: url("ressources/fonts/web/Metro-Goldwyn-Mayer.woff2");
+  \}
+  @font-face \{
+    font-family: "QRfont3L";
+    font-display: block;
+    src: url("ressources/fonts/web/qrfont-3L.woff2");
+  \}
+}

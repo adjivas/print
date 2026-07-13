@@ -1,0 +1,105 @@
+\newcommand{\simpleschemas}[3]{
+  \@open{figure}{class="simpleschemas" data-size="#1"}
+    \rawhtmlinput{ressources/#2.svg}
+    \@open{figcaption}{}
+    #3
+    \@close{figcaption}
+  \@close{figure}
+}
+\newcommand{\simpleimage}[3]{
+  \@open{figure}{class="simpleimage" data-size="#1"}
+    \imgsrc{ressources/#2.webp}
+    \@open{figcaption}{}
+    #3
+    \@close{figcaption}
+  \@close{figure}
+}
+\newcommand{\doubleimage}[5]{
+  \@open{div}{class="doubleimage"}
+    \simpleimage{}{#2}{#3}
+    \simpleimage{}{#4}{#5}
+  \@close{div}
+}
+\newcommand{\multimages}[1]{
+  \@open{div}{class="multimages"}
+  #1
+  \@close{div}
+}
+\newcommand{\simplevideo}[3]{
+  \@open{figure}{class="simplevideo"}
+    \@open{video}{controls muted}
+      \@open{source}{src="ressources/#2.webm" type="video/webm"}
+      \@close{source}
+    \@close{video}
+    \@open{figcaption}{}
+    #3
+    \@close{figcaption}
+  \@close{figure}
+}
+
+\newstyle{figure}{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+}
+
+\newstyle{@media (min-width: 500px)}{
+  .doubleimage \{
+    justify-content: center;
+    display: flex;
+  \}
+}
+
+\newstyle{.multimages}{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+\newstyle{figure > figcaption} {
+  text-align: center;
+}
+
+\newstyle{figure > img}{
+  object-fit: cover;
+  object-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100\%;
+}
+
+\newstyle{.simpleschemas > svg}{
+  display: block;
+  height: auto;
+  width: 100\%;
+}
+\newstyle{.simpleschemas > svg text}{
+  font-family: LatinModern !important;
+}
+
+\newstyle{:is(.simpleimage, .simpleschemas)[data-size="1.0"] > *:not(figcaption)}{
+  max-width: 100\%;
+}
+
+\newstyle{:is(.simpleimage, .simpleschemas)[data-size=".9"] > *:not(figcaption)}{
+  max-width: 90\%;
+}
+
+\newstyle{:is(.simpleimage, .simpleschemas)[data-size=".5"] > *:not(figcaption)}{
+  max-width: 50\%;
+}
+
+\newstyle{:is(.simpleimage, .simpleschemas)[data-size=".4"] > *:not(figcaption)}{
+  max-width: 40\%;
+}
+
+\newstyle{.doubleimage > .simpleimage > img}{
+  max-width: 90\%;
+}
+
+\newstyle{.multimages > .simpleimage}{
+  max-width: 30\%;
+}

@@ -1,0 +1,18 @@
+\newstyle{span}{
+  white-space: pre;
+}
+
+\newstyle{span.tag}{
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 25px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+\newstyle{@media (prefers-color-scheme: light)}{
+  .tag[data-color=cyan] \{
+    color: rgb(2 142 142) !important;
+    border-color: rgb(2 142 142) !important;
+  \}
+}

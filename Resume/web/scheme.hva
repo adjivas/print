@@ -1,0 +1,81 @@
+\newstyle{:root}{
+  --root-bg-color: white;
+  background-color: var(--root-bg-color);
+}
+
+\newstyle{@media (prefers-color-scheme: dark)}{
+  :root \{
+    --root-bg-color: rgb(28, 27, 34);
+  \}
+  article \{
+    text-shadow: rgb(0, 0, 0) 1px 1px 1px;
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: light)}{
+  h1, h2, h3, h4, h5 \{
+    color: rgb(38 38 38);
+  \}
+  h2, h3, h4, h5 \{
+    border-bottom: 4.5px solid rgb(167 255 255);
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: dark)}{
+  h1, h2, h3, h4, h5 \{
+    color: cyan;
+  \}
+  h2 \{
+    border-bottom: 3px double gray;
+  \}
+  h3 \{
+    border-bottom: 1.5px solid gray;
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: light)}{
+  .footnoterule \{
+    width: initial;
+    background-color: transparent !important;
+    background-image: linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 5\%,
+      rgb(167 255 255) 5\%,
+      rgb(167 255 255) 40\%,
+      transparent 40\%
+    );
+  \}
+  .footnoterule \{
+    background-color: rgb(167 255 255);
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: dark)}{
+  .footnoterule \{
+    width: initial;
+    background-color: transparent !important;
+    background-image: linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 5\%,
+      gray 5\%,
+      gray 40\%,
+      transparent 40\%
+    );
+  \}
+  .footnoterule \{
+    background-color: gray;
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: light)}{
+  \#resumename svg \{
+    fill: rgb(38 38 38);
+  \}
+}
+\newstyle{@media (prefers-color-scheme: dark)}{
+  \#resumename svg \{
+    fill: rgb(251 251 254);
+  \}
+}

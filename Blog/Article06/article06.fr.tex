@@ -1,0 +1,85 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[french, english]{babel}
+
+\selectlanguage{french}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{listings}
+
+\renewcommand{\thesection}{\arabic{section}\quad---}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}\quad---}
+
+\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+%BEGIN LATEX
+  \usepackage{core}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+%END LATEX
+
+\title{
+  \blogtitle{Du Multi-Seat Linux}
+}
+\author{}
+\date{}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{article06.fr}{nav/navi.fr}
+
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+Lorsque vous étiez adolescents, peut-être avez-vous déjà dû coordonner des horaires d'utilisation d'une console de jeux ou d'une station de travail.
+C'est une expérience frustrante d'attendre la manette ou le clavier, c'est une situation qui devrait pouvoir être évitée.
+Bien-sûr, certains jeux coopératifs comme \href{https://supertuxkart.net/Main_Page.html}{SuperTuxKart} proposent du multi-manette et de l’écran partagé via du split-screen, cependant d'autres comme \href{https://www.luanti.org/fr/}{Luanti} n'ont pas cette fonctionnalité de split-screen.
+Certains gestionnaires de fenêtre Linux comme Sway intègrent du multi-curseur à focus indépendants, cependant l'expérience reste très exotique et ne va encore plus loin comme du multi-claviers à focus indépendants.
+\\
+La solution que je vais vous proposer est celle du multi-seat par utilisateur.
+
+\simpleschemas{1.0}{multiseat}{Multi-seat de 2 utilisateurs jouant à Luanti sur la même station de travail.}
+
+Le projet Freedesktop fondé pour l'interopérabilité des environnements de bureau sous Unix défini que :
+\begin{itemize}
+  \item Le \href{https://www.freedesktop.org/wiki/Software/systemd/multiseat#definitionofterms}{multi-seat} est un système permettant de définir plusieurs ensembles indépendants de seats utilisables simultanément.
+  \item Le concept de \href{https://www.freedesktop.org/wiki/Software/systemd/multiseat#definitionofterms}{seat} est un groupe de matériels comprenant au moins une interface graphique, comprenant généralement un clavier et une souris.
+\end{itemize}
+
+Sous Linux, le multi-seat est communément utilisé par des gestionnaires de sessions comme LightDM pour attribuer des sièges à des sessions.
+Cela c'est plus répandu dans le début des années 2010 avec la généralisation de systemd et de sa brique systemd-login qui a formalisé le concept de seat.
+
+Aujourd'hui, avec les progrès de bibliothèques graphiques comme la SDL3 et sa récente \href{https://github.com/libsdl-org/SDL/pull/12626}{intégration du support Multi-Seat} documenté par l'article \href{https://www.phoronix.com/news/SDL-Merges-Wayland-Multi-Seat}{SDL Merges Wayland Multi-Seat Support}, nous pouvons plus facilement programmer des applications multi-utilisateurs simultanées.
+Ces applications peuvent par exemple être des jeux coopératifs, et des applications de dessins coopératifs au futur.
+
+\section{Du multi-seats à la Nix}
+Le scénario d'illustration que je vous propose est celui où nous définirons un seat par utilisateur de Sway.
+
+L'article \href{https://wiki.nixos.org/wiki/Multiseat}{Multiseat} du Wiki de NixOS nous propose de définir des règles udev pour attribuer des interfaces à nos seats, et nous mentionne LightDM comme gestionnaire de session.
+
+Nous pouvons définir nos seats et leurs interfaces comme suit :
+\includesnippet{udev-rules}{Règles udev de 2 seats}
+% le seat0 aura un iGPU et un clavier/des souris, le seat1 aura un GPU et un clavier/une souris + interface audio.
+% loginctl seat-status seat0 seat1
+
+\newpage
+Nous pouvons configurer LightDM pour attribuer des seats aux utilisateurs comme suit :
+\includesnippet{lightdm}{LightDM de 2 utilisateurs}
+
+\section{Retour d'expérience}
+J'ai trouvé que ce sujet était peu documenté sous Linux.
+J'utilise du multi-seat pour proposer à mes amis de passage un second siège avec une session invitée.
+Nous pouvons partager la même distribution Linux ou bien ceux-ci peuvent chrooter dans la leurs.
+
+Ce modèle est pas mal du tout et est agréable à utiliser. Nous pouvons y ajouter des services de partage de curseurs et claviers comme \href{https://github.com/feschber/lan-mouse/tree/main}{Lan Mouse} pour rendre l'expérience plus collaborative.
+\end{blogmain}
+\end{document}

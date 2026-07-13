@@ -1,0 +1,23 @@
+\newcommand{\includesnippet}[2]{
+  \@open{figure}{class="simplecode"}
+    \rawhtmlinput{ressources/snippets/#1.html}
+    \@open{figcaption}{}
+      #2
+    \@close{figcaption}
+  \@close{figure}
+}
+
+\newstyle{.lstlisting, .simplecode}{
+  font-weight: initial;
+  font-family: "LatinModern" !important;
+  font-size: inherit;
+  white-space: normal !important;
+  line-height: 1.45;
+  tab-size: 2;
+  max-width: 100\%;
+  overflow-x: scroll;
+  border-width: 2px;
+  border-style: solid;
+  margin-left: initial;
+  margin-right: initial;
+}

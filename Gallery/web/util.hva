@@ -1,0 +1,20 @@
+\newcommand{\gallerytitle}[1]{#1}
+
+\newcommand{\neobar}[1]{
+  \@open{nav}{} \rawhtmlinput{ressources/#1.svg} \@close{nav}
+}
+
+\newcommand{\bloglink}[2]{\href{#1/blog.fr.html}{#2}}
+\newcommand{\resumelink}[2]{\href{#1/resume.fr.html}{#2}}
+\newcommand{\contactlink}[2]{\href{#1/contact.fr.html}{#2}}
+
+\newenvironment{gallerymain}{
+  \@open{article}{}
+    \@open{header}{}
+      \@open{h2}{} \usebox{\@title} \@close{h2}
+    \@close{header}
+}{
+  \@close{article}
+}
+
+\newcommand{\enquote}[1]{“#1”}

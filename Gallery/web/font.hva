@@ -1,0 +1,12 @@
+\newstyle{@media all}{
+  @font-face \{
+    font-family: "LatinModern";
+    font-style: normal;
+    src: url("ressources/fonts/web/LM-regular.woff2");
+  \}
+  @font-face \{
+    font-family: "RetroMgmDisplay";
+    font-style: normal;
+    src: url("ressources/fonts/web/Metro-Goldwyn-Mayer.woff2");
+  \}
+}

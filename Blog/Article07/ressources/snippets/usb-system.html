@@ -1,0 +1,22 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> # IDENT=... sudo --preserve-env=IDENT nix build ./#packages.x86_64-linux.dreaminstall --impure
+<a name="line2"><span>02:</span></a> packages.x86_64-linux.dreaminstall = (nixpkgs.lib.nixosSystem <span style="color:#990000">{</span>
+<a name="line3"><span>03:</span></a>   system = "x86_64-linux";
+<a name="line4"><span>04:</span></a> 
+<a name="line5"><span>05:</span></a>   specialArgs = <span style="color:#990000">{</span>
+<a name="line6"><span>06:</span></a>     inherit inputs self;
+<a name="line7"><span>07:</span></a>     secretsSystem = inputs.secrets;
+<a name="line8"><span>08:</span></a>     secretsUser = inputs.secretsHomeAdjivas;
+<a name="line9"><span>09:</span></a>   <span style="color:#990000">}</span>;
+<a name="line10"><span>10:</span></a> 
+<a name="line11"><span>11:</span></a>   modules = <span style="color:#990000">[</span>
+<a name="line12"><span>12:</span></a>     ./hosts/dreaminstall/configuration.nix
+<a name="line13"><span>13:</span></a>     (<span style="color:#990000">{</span> lib<span style="color:#990000">,</span> ident<span style="color:#990000">,</span> modulesPath<span style="color:#990000">,</span> ... <span style="color:#990000">}</span>: <span style="color:#990000">{</span>
+<a name="line14"><span>14:</span></a>       imports = <span style="color:#990000">[</span>
+<a name="line15"><span>15:</span></a>         (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+<a name="line16"><span>16:</span></a>       <span style="color:#990000">]</span>;
+<a name="line17"><span>17:</span></a> 
+<a name="line18"><span>18:</span></a>       environment.etc."ident-red.txt".text = builtins.readFile (builtins.getEnv "IDENT");
+<a name="line19"><span>19:</span></a>     <span style="color:#990000">}</span>)
+<a name="line20"><span>20:</span></a>   <span style="color:#990000">]</span>;
+<a name="line21"><span>21:</span></a> <span style="color:#990000">}</span>).config.system.build.isoImage;
+<a name="line22"><span>22:</span></a> </pre>

@@ -1,0 +1,37 @@
+\RequirePackage{fontspec}
+
+\newfontface\gothic[
+  Path=./ressources/fonts/,
+  Extension=.ttf,
+  UprightFont=*
+]{Gothic821CondensedBt}
+
+\newfontface\brushscriptregular[
+  Path=./ressources/fonts/,
+  Extension=.otf,
+  UprightFont=*
+]{BrushScriptRegular}
+
+\newfontfamily\hoeflertextengraved[
+  Path=./ressources/fonts/,
+  Extension=.otf,
+  Ligatures=TeX,
+  Scale=MatchLowercase
+]{HoeflerText-Engraved}
+
+\newfontfamily\hoeflertextengravedtwo[
+  Path=./ressources/fonts/,
+  Extension=.otf,
+  Ligatures=TeX,
+  Scale=MatchLowercase
+]{HoeflerText-Engraved-2}
+
+\newfontfamily\hoeflertextregular[
+  BoldFont={HoeflerText-Black},
+  ItalicFont={HoeflerText-Italic},
+  BoldItalicFont={HoeflerText-BlackItalic},
+  Path=./ressources/fonts/,
+  Extension=.ttf,
+  Ligatures=TeX,
+  Scale=MatchLowercase
+]{HoeflerText-Regular}

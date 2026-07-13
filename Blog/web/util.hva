@@ -1,0 +1,33 @@
+\newcommand{\blogtitle}[1]{#1}
+
+\newcommand{\neobar}[2]{
+  \@open{nav}{}
+    \@open{aside}{}
+      \@open{a}{tabindex="-1" title="Flux Atom (abonnement aux mises à jour du site)" href=ressources/feed.atom}ATOM\@close{a}
+      \@open{a}{tabindex="-1" title="Fichier PDF (format de diffusion universel)" href=#1.pdf}PDF\@close{a}
+    \@close{aside}
+    \rawhtmlinput{ressources/#2.svg}
+  \@close{nav}
+}
+
+\newcommand{\bloglink}[2]{\href{#1.html}{#2}}
+
+\newcommand{\blogtag}[2]{
+  \@open{span}{data-color=#1 style="border-color: #1;color: #1;background-color:color-mix(in srgb, #1 10\%, transparent);" class="tag"} #2 \@close{span}
+}
+
+\newenvironment{blogmain}{
+  \@open{article}{}
+    \@open{header}{}
+      \@open{h2}{} \usebox{\@title} \@close{h2}
+    \@close{header}
+}{
+  \@open{footer}{}
+    \@footnoteflush{document}
+    \@atenddocument
+  \@close{footer}
+  \@close{article}
+  \blogfooter
+}
+
+\newcommand{\enquote}[1]{“#1”}

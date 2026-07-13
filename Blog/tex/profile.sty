@@ -1,0 +1,53 @@
+\RequirePackage{tikz}
+
+\RequirePackage{xcolor}
+
+% Navi
+\definecolor{color_c00ffef}{gray}{0.7}
+\definecolor{color_c454545}{gray}{0.3}
+\definecolor{color_c7f80ff}{gray}{0.5}
+\definecolor{color_cd8d8d8}{gray}{0.7}
+\definecolor{color_cbfbfbf}{gray}{0.3}
+\definecolor{color_c7f7f7f}{gray}{0.7}
+\definecolor{color_magenta}{gray}{0.5}
+\definecolor{color_cyan}{gray}{0.3}
+
+% Mouse
+\definecolor{c000000}{gray}{0.7}
+\definecolor{c0070fe}{gray}{0.3}
+\definecolor{c00acef}{gray}{0.5}
+\definecolor{c7f7f7f}{gray}{0.7}
+\definecolor{c191919}{gray}{0.3}
+\definecolor{ce5e5e5}{gray}{0.5}
+\definecolor{cb2b2b2}{gray}{0.7}
+\definecolor{c4c4c4c}{gray}{0.3}
+\definecolor{ce6e6e6}{gray}{0.5}
+\definecolor{cffffff}{gray}{0.7}
+\definecolor{c00ffef}{gray}{0.3}
+\definecolor{cb3b3b3}{gray}{0.7}
+
+\definecolor{color_283006}{gray}{0.5}
+\definecolor{color_29791}{gray}{0.7}
+
+\tikzset{tagblock/.style={
+  rounded corners, rectangle, draw,
+  inner sep=3pt, outer sep=0pt
+}}
+
+\newcommand{\blogtag}[2]{
+  \tikz\node[tagblock,#1,fill=#1!10] {#2};
+}
+
+\newcommand{\profilesvg}[1]{
+  \dimendef\prevdepth=0
+  \begin{figure}[!ht]
+    \centering
+    \resizebox*{!}{0.2\textheight}{
+      \begin{tikzpicture}[
+        inner sep=0pt, outer sep=0pt
+      ]
+        \input{ressources/profiles/#1.tex}
+      \end{tikzpicture}
+    }
+  \end{figure}
+}

@@ -1,0 +1,170 @@
+\newstyle{nav}{
+  display: flex;
+  justify-content: center;
+}
+\newstyle{nav > svg}{
+  display: block;
+  width: calc(100vw - 25px);
+  height: auto;
+  max-height: 250px;
+}
+
+\newstyle{
+  nav \#path1, nav \#path1-8, nav \#path1-85, nav \#path1-98, nav \#path1-54,
+  nav \#path97, nav \#path98, nav \#path99, nav \#path100, nav \#path41
+}{
+  transform: translateX(
+    clamp(-326px, calc(920px - 100vw), 0px)
+  );
+  transform-box: fill-box;
+}
+
+\newstyle{
+  nav \#path1-1, nav \#path1-2, nav \#path1-15, nav \#path1-91, nav \#path1-59, nav \#path1-3, nav \#path1-94, nav \#path1-20, nav \#path1-0,
+  nav \#path43, nav \#path91, nav \#path92, nav \#path93, nav \#path94, nav \#path95, nav \#path96, nav \#path102, nav \#path104,
+  nav \#rect106-2-5, nav \#rect106-9-2
+}{
+  transform: translateX(
+    clamp(-326px/2, calc(920px - 100vw), 0px)
+  );
+  transform-box: fill-box;
+}
+
+\newstyle{
+  nav \#rect106-2
+}{
+  transform: translateX(
+    clamp(-150px, calc(920px - 100vw), 0px)
+  );
+  transform-box: fill-box;
+}
+\newstyle{
+  nav \#rect106-9
+}{
+  transform: translateX(
+    clamp(-975px, calc(108px - 100vw), -812px)
+  );
+  transform-box: fill-box;
+}
+
+
+\newstyle{
+  nav \#path1-84, nav \#path103
+}{
+  transform: translateX( clamp(-328px, calc(920px - 100vw), 0px) ) scaleX(1.85);
+  transform-box: fill-box;
+  transform-origin: left;
+}
+
+\newstyle{
+  nav \#path101, nav \#path1-6
+}{
+  transform: translateX(
+    clamp(-326px/4, calc(920px - 100vw), 0px)
+  ) scaleX(2.3);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+\newstyle{
+  nav \#text1
+}{
+  transform: translateX(
+    clamp(-248px, calc(920px - 100vw), 0px)
+  );
+}
+\newstyle{
+  nav \#text2
+}{
+  transform: translateX(
+    clamp(-100px, calc(920px - 100vw), 0px)
+  );
+}
+\newstyle{
+  nav \#text3
+}{
+  transform: translateX(
+    clamp(-20px, calc(100vw - 935px), 68px)
+  );
+}
+\newstyle{
+  nav \#text4
+}{
+  transform: translateX(
+    clamp(0px, calc(100vw - 920px), 220px)
+  );
+}
+
+\newstyle{
+  nav \#rect106-2-5, nav \#rect106-4,
+  nav \#rect106, nav \#rect106-2,
+  nav \#rect106-9-2, nav \#rect106-9,
+  nav \#path1-4
+}{
+  fill: var(--root-bg-color) !important;
+}
+
+\newstyle{
+  nav \#tspan1,
+  nav \#tspan1-7,
+  nav \#tspan1-7-7,
+  nav \#tspan1-7-8
+}{
+  font-family: RetroMgmDisplay !important;
+}
+
+\newstyle{
+  nav \#a1,
+  nav \#a2,
+  nav \#a3,
+  nav \#a4
+}{
+  text-decoration: none;
+}
+
+\newstyle{
+  nav \#a1:hover \#tspan1,
+  nav \#a2:hover \#tspan1-7,
+  nav \#a3:hover \#tspan1-7-7,
+  nav \#a4:hover \#tspan1-7-8
+}{
+  text-decoration: underline !important;
+}
+
+\newstyle{@media (prefers-color-scheme: light)}{
+  nav \#tspan1 \{
+    fill: url(\#gradactivated) !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+  \}
+  nav \#tspan1-7, nav \#tspan1-7-7, nav \#tspan1-7-8 \{
+    fill: \#545454 !important;
+  \}
+  nav \#a1:hover \#tspan1 \{
+    text-decoration-thickness: 1px !important;
+    text-decoration-skip-ink: none;
+  \}
+  nav \#a1:hover \#tspan1,
+  nav \#a2:hover \#tspan1-7,
+  nav \#a3:hover \#tspan1-7-7,
+  nav \#a4:hover \#tspan1-7-8 \{
+    fill: \#4bdedf !important;
+  \}
+}
+
+\newstyle{@media (prefers-color-scheme: dark)}{
+  nav \#tspan1 \{
+    font-weight: 400 !important;
+    text-decoration: underline !important;
+    fill: black !important;
+  \}
+  nav \#tspan1-7, nav \#tspan1-7-7, nav \#tspan1-7-8 \{
+    fill: \#6d6d6d !important;
+  \}
+  nav \#a1:hover \#tspan1,
+  nav \#a2:hover \#tspan1-7,
+  nav \#a3:hover \#tspan1-7-7,
+  nav \#a4:hover \#tspan1-7-8 \{
+    fill: \#4bdedf !important;
+  \}
+}

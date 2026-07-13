@@ -1,0 +1,90 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+%BEGIN LATEX
+  \usepackage{core}
+  \usepackage{fancyhdr}
+
+  \newcommand{\mousevox}[2]{\IfStrEq{\jobname}{\detokenize{mouse}}{#1}{#2}}
+
+  \newcommand{\resumelink}[2]{
+    \href{#1/resume.fr.pdf}{#2}
+  }
+  \newcommand{\gallerylink}[2]{
+    \href{#1/gallery.fr.pdf}{#2}
+  }
+  \newcommand{\contactlink}[2]{
+    \href{#1/contact.fr.pdf}{#2}
+  }
+%END LATEX
+
+\title{\mousevox{
+  \blogtitle{Le Journal de la Souris Éclair}
+} {
+  \blogtitle{Navi's Blog}
+}}
+\author{
+  adjivas \\
+  <contact.blog@adjivas.eu> \\
+  Résumé www.mouse.paris/mouse/resume.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi}{www.adjivas.eu/navi/resume.fr.pdf}
+  } \\
+  Galerie www.mouse.paris/mouse/gallery.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi}{www.adjivas.eu/navi/gallery.fr.pdf}
+  } \\
+  Contact www.mouse.paris/mouse/contact.fr.pdf
+  }{
+    \href{https://www.adjivas.eu/navi}{www.adjivas.eu/navi/contact.fr.pdf}
+  }
+}
+\date{}
+
+% enumitem
+\setlength{\itemsep}{0\baselineskip}
+\setlength{\parsep}{0pt}
+
+\pagestyle{plain}
+\begin{document}
+\neobar{blog.fr}{nav/navi.fr}
+\maketitle
+
+\thispagestyle{first}
+\begin{blogmain}
+
+  Je suis informaticien de formation, issu de la première promo de l'école 42 de Paris. J'y ai appris à apprendre, particulièrement dans les domaines de l'électronique, de programmation système et embarqué. Je développe aujourd'hui quelques projets selon la philosophie du \href{https://linuxfr.org/wiki/libre{logiciel libre}.
+}
+
+L'idée de ce blog est de vous les documenter :
+
+  % 0X Du Luanti + Blender + Lua + graph
+  % 0X De la Téléphonie Linux à l'ordiphone
+  % 0X Sony Camera --> Probably for galerie
+  %
+  % 0X De l'installation de NixOS en série/Pixie !
+  % 0X Un problème RCPSP
+  % 0X Des alias mails en masse
+\subsection*{2025}
+
+\begin{itemize}
+  \item \bloglink{article07.fr}{Article07, De NixOS à NaviOS} \blogtag{cyan}{Ops}
+  \item \bloglink{article06.fr}{Article06, Du Multi-Seat Linux} \blogtag{cyan}{Ops}
+  \item \bloglink{article05.fr}{Article05, Du GPU Passthrough à la Nix pour du Windows} \blogtag{cyan}{Ops}
+  \item \bloglink{article04.fr}{Article04, Des ceintures Tigres et Panthères !} \blogtag{brown}{Maker}
+\end{itemize}
+
+\subsection*{2024}
+
+\begin{itemize}
+  \item \bloglink{article03.fr}{Article03, De ArchLinux à Nix/NixOS} \blogtag{cyan}{Ops}
+  \item \bloglink{article02.fr}{Article02, Des Claviers Métals} \blogtag{brown}{Maker}
+  \item \bloglink{article01.fr}{Article01, Des sous-verres en cuir} \blogtag{brown}{Maker}
+  \item \bloglink{article00.fr}{Article00, Du café façon Guinness} \blogtag{brown}{Maker}
+\end{itemize}
+
+\end{blogmain}
+\end{document}

@@ -1,0 +1,36 @@
+<pre style="font-size: x-large;font-family:LatinModern;"><a name="line1"><span>01:</span></a> <span style="color:#990000">{</span> config<span style="color:#990000">,</span> pkgs<span style="color:#990000">,</span> lib<span style="color:#990000">,</span> ... <span style="color:#990000">}</span>: let
+<a name="line2"><span>02:</span></a>   distroName = "NAVI-OS";
+<a name="line3"><span>03:</span></a>   distroId = "navyos";
+<a name="line4"><span>04:</span></a> 
+<a name="line5"><span>05:</span></a>   needsEscaping = s: <b><span style="color:#0000FF">null</span></b> != builtins.match "[a-zA-Z0-9]+" s;
+<a name="line6"><span>06:</span></a>   escapeIfNecessary = s: if needsEscaping s then s else ''"${lib.escape [ "\$" "\"" "\\" "\`" ] s}"'';
+<a name="line7"><span>07:</span></a>   attrsToText = attrs: lib.concatStringsSep "\n" (
+<a name="line8"><span>08:</span></a>     lib.mapAttrsToList (n: v: ''$<span style="color:#990000">{</span>n<span style="color:#990000">}</span>=$<span style="color:#990000">{</span>escapeIfNecessary (toString v)<span style="color:#990000">}</span>'') attrs
+<a name="line9"><span>09:</span></a>   ) + "\n";
+<a name="line10"><span>10:</span></a> 
+<a name="line11"><span>11:</span></a>   osReleaseContents = <span style="color:#990000">{</span>
+<a name="line12"><span>12:</span></a>     NAME = distroName;
+<a name="line13"><span>13:</span></a>     ID = distroId;
+<a name="line14"><span>14:</span></a>     VERSION = "${config.system.nixos.release} (${config.system.nixos.codeName})";
+<a name="line15"><span>15:</span></a>     VERSION_CODENAME = lib.toLower config.system.nixos.codeName;
+<a name="line16"><span>16:</span></a>     VERSION_ID = config.system.nixos.release;
+<a name="line17"><span>17:</span></a>     BUILD_ID = config.system.nixos.version;
+<a name="line18"><span>18:</span></a>     PRETTY_NAME = "${distroName} ${config.system.nixos.release} (${config.system.nixos.codeName})";
+<a name="line19"><span>19:</span></a>     LOGO = "nix-snowflake";
+<a name="line20"><span>20:</span></a>     HOME_URL = "https://github.com/adjivas/NaviOS";
+<a name="line21"><span>21:</span></a>     DOCUMENTATION_URL = "";
+<a name="line22"><span>22:</span></a>     SUPPORT_URL = "";
+<a name="line23"><span>23:</span></a>     BUG_REPORT_URL = "";
+<a name="line24"><span>24:</span></a>   <span style="color:#990000">}</span>;
+<a name="line25"><span>25:</span></a> in <span style="color:#990000">{</span>
+<a name="line26"><span>26:</span></a>   environment.etc."os-release".text = lib.mkForce (attrsToText osReleaseContents);
+<a name="line27"><span>27:</span></a> 
+<a name="line28"><span>28:</span></a>   environment.systemPackages = <span style="color:#990000">[</span>
+<a name="line29"><span>29:</span></a>     # Gnome-control-center
+<a name="line30"><span>30:</span></a>     (pkgs.writeTextDir "share/icons/hicolor/scalable/apps/nix-snowflake.svg" (builtins.readFile ./hosts/dreamadjivas/Nix_Snowflake_Logo.svg))
+<a name="line31"><span>31:</span></a>   <span style="color:#990000">]</span>;
+<a name="line32"><span>32:</span></a> 
+<a name="line33"><span>33:</span></a>   system.nixos.distroName = distroName;
+<a name="line34"><span>34:</span></a>   system.nixos.distroId = distroId;
+<a name="line35"><span>35:</span></a> <span style="color:#990000">}</span>
+<a name="line36"><span>36:</span></a> </pre>
